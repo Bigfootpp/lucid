@@ -1,0 +1,9 @@
+*.rbxl
+*.rbxl.lock
+.vscode/
+
+sourcemap.json
+
+bin/
+obj/
+temp/
