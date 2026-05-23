@@ -4,22 +4,16 @@
     "$className": "DataModel",
 
     "ReplicatedStorage": {
-      "Shared": {
-        "$path": "src/shared"
-      }
-    },
+      "LuCid": {
+        "$path": "src"
+      },
+      
+      "Packages": {
+        "$path": "Packages"
+      },
 
-    "ServerScriptService": {
-      "Server": {
-        "$path": "src/server"
-      }
-    },
-
-    "StarterPlayer": {
-      "StarterPlayerScripts": {
-        "Client": {
-          "$path": "src/client"
-        }
+      "DevPackages": {
+        "$path": "DevPackages"
       }
     }
   }

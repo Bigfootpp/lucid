@@ -1,5 +1,6 @@
-*.rbxl
-*.rbxl.lock
+rblx-place/
+
+
 .vscode/
 
 sourcemap.json
