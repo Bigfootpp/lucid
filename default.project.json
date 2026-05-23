@@ -7,9 +7,6 @@
       "LuCid": {
         "$path": "src"
       },
-      "DevPackages": {
-        "$path": "DevPackages"
-      },
       "Tests": {
         "$path": "tests"
       }

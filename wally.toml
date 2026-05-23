@@ -2,10 +2,11 @@
 name = "bigfootpp/lucid"
 version = "0.1.0"
 registry = "https://github.com/UpliftGames/wally-index"
+license = "MIT"
+description = "A package to simplify OOP"
+repository = "https://github.com/Bigfootpp/lucid"
 realm = "shared"
 
 [dependencies]
 
 [dev-dependencies]
-Jest = "jsdotlua/jest@3.10.0"
-JestGlobals = "jsdotlua/jest-globals@3.10.0"
