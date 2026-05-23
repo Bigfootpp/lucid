@@ -1,7 +1,8 @@
+--!strict
 local Class = require(script.Class)
 
-local function class(): Class.ClassObject
-    return Class.New()
+local function class(methods: {}): Class.ClassObject
+    return Class.New(methods)
 end
 
 return class

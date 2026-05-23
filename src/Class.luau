@@ -2,13 +2,14 @@ local Class = {}
 Class.__index = Class
 
 type ClassType = {
-    name: string | nil
+    _methods: {}
 }
 
 export type ClassObject = typeof(setmetatable({} :: ClassType, Class))
 
-function Class.New(): ClassObject 
+function Class.New(methods: {}): ClassObject 
     local self = setmetatable({}::ClassType, Class)
+    self._methods = methods
 
     return self
 end

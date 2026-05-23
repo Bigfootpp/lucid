@@ -1,8 +1,12 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local class = require(ReplicatedStorage.LuCid)
 
+print(require(ReplicatedStorage.LuCid.Class))
+
 function main()
-    local MyClass = class()
+    local MyClass = class {
+        
+    }
 
     assert(MyClass, "Class is not created")
     print("Class successfully created")
