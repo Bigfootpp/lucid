@@ -5,8 +5,12 @@ print(require(ReplicatedStorage.LuCid.Class))
 
 function main()
     local MyClass = class {
-        
+        __init = function(self)
+            
+        end
     }
+
+    MyClass:__init()
 
     assert(MyClass, "Class is not created")
     print("Class successfully created")

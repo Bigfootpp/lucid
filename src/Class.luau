@@ -7,7 +7,9 @@ type ClassType = {
 
 export type ClassObject = typeof(setmetatable({} :: ClassType, Class))
 
-function Class.New(methods: {}): ClassObject 
+function Class.New<T>(methods: T): ClassObject & T
+    assert(typeof(methods) == "table", "Methods should be a table")
+
     local self = setmetatable({}::ClassType, Class)
     self._methods = methods
 
