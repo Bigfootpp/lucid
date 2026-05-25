@@ -26,6 +26,7 @@ function main()
     print("Object successfully created")
 
     person:greet()
+    print(person.name)
 end
 
 return main
