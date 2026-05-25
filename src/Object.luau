@@ -6,6 +6,7 @@ type ObjectType = {
 }
 
 export type ObjectClass = typeof(setmetatable({} :: ObjectType, Object))
+export type InterObjectClass<T, U> = ObjectClass & T & U
 
 function Object.New<T, U>(variables: T, methods: U, id: string, ...): ObjectClass & T & U
     local self = setmetatable({}::ObjectType, Object)

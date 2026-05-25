@@ -5,19 +5,25 @@ local Object = require(script.Parent.Object)
 local Class = {}
 Class.__index = Class
 
-type ClassType = {
-    _variables: {[string]: any},
-    _methods: {[string]: (...any) -> ...any},
+type ClassType<T,U> = {
+    _variables: T,
+    _methods: U,
     _id: string
 }
 
-export type ClassObject = typeof(setmetatable({} :: ClassType, Class))
+export type ClassObject<T, U> = typeof(setmetatable({} :: ClassType<T, U>, Class)) & {
+    create: (...any) -> (Object.InterObjectClass<T, U>)
+}
 
-function Class.New<T, U>(variables: T, methods: U): ClassObject
+
+function Class.New<T, U>(
+    variables: T,
+    methods: U -- & {[string]: (Object.InterObjectClass<T, U>, ...any) -> ...any}
+): ClassObject<T, U>
     assert(typeof(variables) == "table", "Variables should be a table")
     assert(typeof(methods) == "table", "Methods should be a table")
 
-    local self = setmetatable({}::ClassType, Class)
+    local self = setmetatable({}::ClassType<T, U>, Class)
     self._variables = {}
     self._methods = {}
 
@@ -34,7 +40,7 @@ function Class.New<T, U>(variables: T, methods: U): ClassObject
     return self
 end
 
-function Class.__call(self: ClassObject, ...): Object.ObjectClass
+function Class.create(self: any, ...): any
     return Object.New(self._variables, self._methods, self._id, ...)
 end
 

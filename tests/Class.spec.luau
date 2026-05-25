@@ -1,3 +1,4 @@
+--!strict
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local class = require(ReplicatedStorage.LuCid)
 
@@ -15,15 +16,17 @@ function main()
         end
     }
 
+
     assert(Human, "Class is not created")
     print("Class successfully created")
 
-    local adult = Human("Jean", 20)
+    local person = Human:create("Jean", 20)
 
-    assert(adult, "Object is not created")
+    assert(person, "Object is not created")
     print("Object successfully created")
 
-    adult:greet()
+    person:greet()
+    print(person.name)
 end
 
 return main
