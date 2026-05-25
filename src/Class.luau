@@ -1,4 +1,6 @@
 local HttpService = game:GetService("HttpService")
+local PREFIX = HttpService:GenerateGUID(false)
+local counter = 0
 
 local Object = require(script.Parent.Object)
 
@@ -14,10 +16,11 @@ export type ClassObject<T, U> = ClassType & {
 }
 
 function Class.New<T, U>(variables: T, methods: U): ClassObject<T, U>
+    counter = counter + 1
     local self = setmetatable({}, Class)
     self._variables = variables
     self._methods = methods
-    self._id = HttpService:GenerateGUID(false)
+    self._id = PREFIX .. "_" .. counter
 
     return self :: ClassObject<T, U>
 end
