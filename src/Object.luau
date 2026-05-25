@@ -1,3 +1,6 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TableUtils = require(ReplicatedStorage.Packages.TableUtil)
+
 local Object = {}
 Object.__index = Object
 
@@ -11,7 +14,7 @@ function Object.New<T, U>(variables: T, methods: U, id: string, ...): InterObjec
     local self = setmetatable({}, Object)
     self._id = id
     
-    for key, value in variables do self[key] = value end
+    for key, value in variables do self[key] = typeof(value) ~= "table" and value or TableUtils.Copy(value, true) end
     for key, value in methods do self[key] = value end
 
     if (methods)["__init"] then (methods)["__init"](self, ...) end

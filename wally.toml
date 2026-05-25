@@ -8,5 +8,6 @@ repository = "https://github.com/Bigfootpp/lucid"
 realm = "shared"
 
 [dependencies]
+TableUtil = "sleitnick/table-util@1.2.1"
 
 [dev-dependencies]
