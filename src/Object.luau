@@ -5,23 +5,18 @@ type ObjectType = {
     _id: string
 }
 
-export type ObjectClass = typeof(setmetatable({} :: ObjectType, Object))
-export type InterObjectClass<T, U> = ObjectClass & T & U
+export type InterObjectClass<T, U> = ObjectType & T & U
 
-function Object.New<T, U>(variables: T, methods: U, id: string, ...): ObjectClass & T & U
-    local self = setmetatable({}::ObjectType, Object)
-    for key, value in variables do
-        assert(typeof(value) ~= "function", "Elements in variables should not be functions")
-        self[key] = value
-    end
-    for key, value in methods do
-        assert(typeof(value) == "function", "Elements in methods should be functions")
-        self[key] = value
-    end
+function Object.New<T, U>(variables: T, methods: U, id: string, ...): InterObjectClass<T, U>
+    local self = setmetatable({}, Object)
+    self._id = id
+    
+    for key, value in variables do self[key] = value end
+    for key, value in methods do self[key] = value end
 
-    if methods["__init"] then methods["__init"](self, ...) end
+    if (methods)["__init"] then (methods)["__init"](self, ...) end
 
-    return self
+    return self :: InterObjectClass<T, U>
 end
 
 return Object
