@@ -8,6 +8,8 @@ description = "A lightweight LuaU package to simplify OOP"
 repository = "https://github.com/Bigfootpp/lucid"
 realm = "shared"
 exclude = [
+    "DevPackages",
+    "Packages",
     "tests",
     "runner",
     ".vscode",
