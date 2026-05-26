@@ -10,6 +10,10 @@ type ObjectType = {
 
 export type InterObjectClass<T, U> = ObjectType & T & U
 
+function Object:GetId(): string
+    return self._id
+end
+
 function Object.New<T, U>(variables: T, methods: U, id: string, ...): InterObjectClass<T, U>
     local self = TableUtils.Copy(variables, true)
     self._id = id
