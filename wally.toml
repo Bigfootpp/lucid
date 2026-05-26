@@ -1,11 +1,24 @@
 [package]
 name = "bigfootpp/lucid"
-version = "0.1.0"
+version = "0.2.0"
 registry = "https://github.com/UpliftGames/wally-index"
+license = "MIT"
+authors = ["Bigfoot"]
+description = "A lightweight LuaU package to simplify OOP"
+repository = "https://github.com/Bigfootpp/lucid"
 realm = "shared"
+exclude = [
+    "DevPackages",
+    "Packages",
+    "tests",
+    "runner",
+    ".vscode",
+    "aftman.toml",
+    "default.project.json",
+    "wally.lock"
+]
 
 [dependencies]
+TableUtil = "sleitnick/table-util@1.2.1"
 
 [dev-dependencies]
-Jest = "jsdotlua/jest@3.10.0"
-JestGlobals = "jsdotlua/jest-globals@3.10.0"
