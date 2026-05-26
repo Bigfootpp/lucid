@@ -6,6 +6,14 @@ license = "MIT"
 description = "A package to simplify OOP"
 repository = "https://github.com/Bigfootpp/lucid"
 realm = "shared"
+exclude = [
+    "tests",
+    "runner",
+    ".vscode",
+    "aftman.toml",
+    "default.project.json",
+    "wally.lock"
+]
 
 [dependencies]
 TableUtil = "sleitnick/table-util@1.2.1"
