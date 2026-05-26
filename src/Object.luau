@@ -13,6 +13,10 @@ export type InterObjectClass<T, U> = ObjectType & T & U
 function Object.New<T, U>(variables: T, methods: U, id: string, ...): InterObjectClass<T, U>
     local self = TableUtils.Copy(variables, true)
     self._id = id
+
+    if not getmetatable(methods) then
+        setmetatable(methods, Object)
+    end
     
     local mt = {
         __index = methods
