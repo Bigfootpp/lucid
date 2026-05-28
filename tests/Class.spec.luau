@@ -1,6 +1,6 @@
 --!strict
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local class = require(ReplicatedStorage.LuCid)
+local class = require(ReplicatedStorage.Packages.LuCid)
 
 function main()
     local Human = class {
