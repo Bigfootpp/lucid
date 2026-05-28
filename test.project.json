@@ -1,0 +1,25 @@
+{
+  "name": "LuCid",
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedStorage": {
+      "LuCid": {
+        "$path": "src"
+      },
+      "Tests": {
+        "$path": "tests"
+      },
+      
+      "Packages": {
+        "$path": "Packages"
+      }
+    },
+
+    "ServerScriptService": {
+      "Runner": {
+        "$path": "runner"
+      }
+    }
+  }
+}

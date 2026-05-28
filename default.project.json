@@ -6,19 +6,6 @@
     "ReplicatedStorage": {
       "LuCid": {
         "$path": "src"
-      },
-      "Tests": {
-        "$path": "tests"
-      },
-      
-      "Packages": {
-        "$path": "Packages"
-      }
-    },
-
-    "ServerScriptService": {
-      "Runner": {
-        "$path": "runner"
       }
     }
   }
