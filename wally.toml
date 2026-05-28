@@ -15,7 +15,7 @@ exclude = [
     "runner",
     ".vscode",
     "aftman.toml",
-    "test.project.json",
+    "dev.project.json",
     "wally.lock"
 ]
 
