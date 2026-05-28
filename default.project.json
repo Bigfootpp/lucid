@@ -1,12 +1,6 @@
 {
   "name": "LuCid",
   "tree": {
-    "$className": "DataModel",
-
-    "ReplicatedStorage": {
-      "LuCid": {
-        "$path": "src"
-      }
-    }
-  }
+		"$path": "src"
+	}
 }
