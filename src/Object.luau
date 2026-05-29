@@ -1,5 +1,4 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local TableUtils = require(ReplicatedStorage.Packages.TableUtil)
+local TableUtils = require(script.Parent.Parent.TableUtil)
 
 local Object = {}
 Object.__index = Object
