@@ -1,4 +1,5 @@
 local HttpService = game:GetService("HttpService")
+local TableUtils = require(script.Parent.Parent.TableUtil)
 local PREFIX = HttpService:GenerateGUID(false)
 local counter = 0
 
@@ -17,22 +18,26 @@ type ClassType = {
 type GetMethods<C> = index<C, "_methods">
 type GetVariables<C> = index<C, "_variables">
 
-export type ClassObject<V, M, P = {}> = ClassType & {
-    create: (self: any, ...any) -> Object.InterObjectClass<V, M, GetMethods<P>, GetVariables<P>>
+export type ClassObject<V, M, P> = ClassType & {
+    create: (self: any, ...any) -> Object.InterObjectClass<V & GetVariables<P>, M & GetMethods<P>>
 }
 
-function Class.New<V, M>(variables: V, methods: M): ClassObject<V, M>
+function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): ClassObject<V, M, P?>
+    -- Typing
+    parentClass = parentClass :: ClassType
+    
     counter = counter + 1
     local self = setmetatable({}, Class)
-    self._variables = variables
-    self._methods = methods
+    self._variables = TableUtils.Extend(variables, parentClass and parentClass._variables or {})
+    self._methods = TableUtils.Extend(methods, parentClass and parentClass._methods or {})
+    self._parent_ids = parentClass and TableUtils.Extend(parentClass._parent_ids, parentClass._id) or {}
     self._id = PREFIX .. "_" .. counter
 
-    return self :: ClassObject<V, M>
+    return self :: ClassObject<V, M, P?>
 end
 
 function Class.create(self: any, ...): any
-    return Object.New(self._variables, self._methods, self._id, ...)
+    return Object.New(self._variables, self._methods, self._id, self._parent_ids, ...)
 end
 
 return Class

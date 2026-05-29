@@ -8,28 +8,25 @@ type ObjectType = {
     _parent_ids: {[number]: string}
 }
 
-export type InterObjectClass<V, M, PM = {}, PV = {}> = ObjectType & V & M & PM & PV
+export type InterObjectClass<V, M> = ObjectType & V & M
 
 function Object:GetId(): string
     return self._id
 end
 
 function Object:GetParentIds(): {[number]: string}
-    return self._parents_ids
+    return self._parent_ids
 end
 
-function Object.New<V, M>(variables: V, methods: M, id: string, ...): InterObjectClass<V, M>
-    local self = TableUtils.Copy(variables, true)
+function Object.New<V, M>(variables: V, methods: M, id: string, parentIds: {[number]: string}, ...): InterObjectClass<V, M>
+    local self = TableUtils.Copy(variables, true) :: ObjectType
+    self._parent_ids = parentIds
     self._id = id
 
-    if not getmetatable(methods) then
-        setmetatable(methods, Object)
-    end
-    
-    local mt = {
+    setmetatable(methods, Object)
+    setmetatable(self, {
         __index = methods
-    }
-    setmetatable(self, mt)
+    })
 
     if methods["__init"] then 
         methods["__init"](self, ...) 
