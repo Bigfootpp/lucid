@@ -8,8 +8,13 @@ local Class = {}
 Class.__index = Class
 
 type ClassType = {
-    _id: string
+    _id: string,
+    _methods: {[string]: (self: any, ...any) -> (...any)},
+    _variables: {[string]: any}
 }
+
+type GetMethods<C> = index<C, "_methods">
+type GetVariables<C> = index<C, "_variables">
 
 export type ClassObject<V, M> = ClassType & {
     create: (self: any, ...any) -> Object.InterObjectClass<V, M>
