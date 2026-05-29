@@ -11,18 +11,18 @@ type ClassType = {
     _id: string
 }
 
-export type ClassObject<T, U> = ClassType & {
-    create: (self: any, ...any) -> Object.InterObjectClass<T, U>
+export type ClassObject<V, M> = ClassType & {
+    create: (self: any, ...any) -> Object.InterObjectClass<V, M>
 }
 
-function Class.New<T, U>(variables: T, methods: U): ClassObject<T, U>
+function Class.New<V, M>(variables: V, methods: M): ClassObject<V, M>
     counter = counter + 1
     local self = setmetatable({}, Class)
     self._variables = variables
     self._methods = methods
     self._id = PREFIX .. "_" .. counter
 
-    return self :: ClassObject<T, U>
+    return self :: ClassObject<V, M>
 end
 
 function Class.create(self: any, ...): any

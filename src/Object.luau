@@ -7,13 +7,13 @@ type ObjectType = {
     _id: string
 }
 
-export type InterObjectClass<T, U> = ObjectType & T & U
+export type InterObjectClass<V, M> = ObjectType & V & M
 
 function Object:GetId(): string
     return self._id
 end
 
-function Object.New<T, U>(variables: T, methods: U, id: string, ...): InterObjectClass<T, U>
+function Object.New<V, M>(variables: V, methods: M, id: string, ...): InterObjectClass<V, M>
     local self = TableUtils.Copy(variables, true)
     self._id = id
 
@@ -30,7 +30,7 @@ function Object.New<T, U>(variables: T, methods: U, id: string, ...): InterObjec
         methods["__init"](self, ...) 
     end
 
-    return self :: InterObjectClass<T, U>
+    return self :: InterObjectClass<V, M>
 end
 
 return Object

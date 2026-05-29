@@ -1,8 +1,8 @@
 --!strict
 local Class = require(script.Class)
 
-local function class<T>(variables: T)
-    return function<U>(methods: U): Class.ClassObject<T, U>
+local function class<V>(variables: V)
+    return function<M>(methods: M): Class.ClassObject<V, M>
         return Class.New(variables, methods)
     end
 end
