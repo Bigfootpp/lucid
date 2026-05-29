@@ -9,6 +9,7 @@ Class.__index = Class
 
 type ClassType = {
     _id: string,
+    _parent_ids: {[number]: string},
     _methods: {[string]: (self: any, ...any) -> (...any)},
     _variables: {[string]: any}
 }
@@ -16,8 +17,8 @@ type ClassType = {
 type GetMethods<C> = index<C, "_methods">
 type GetVariables<C> = index<C, "_variables">
 
-export type ClassObject<V, M> = ClassType & {
-    create: (self: any, ...any) -> Object.InterObjectClass<V, M>
+export type ClassObject<V, M, P = {}> = ClassType & {
+    create: (self: any, ...any) -> Object.InterObjectClass<V, M, GetMethods<P>, GetVariables<P>>
 }
 
 function Class.New<V, M>(variables: V, methods: M): ClassObject<V, M>

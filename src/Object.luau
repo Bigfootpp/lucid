@@ -4,13 +4,18 @@ local Object = {}
 Object.__index = Object
 
 type ObjectType = {
-    _id: string
+    _id: string,
+    _parent_ids: {[number]: string}
 }
 
-export type InterObjectClass<V, M> = ObjectType & V & M
+export type InterObjectClass<V, M, PM = {}, PV = {}> = ObjectType & V & M & PM & PV
 
 function Object:GetId(): string
     return self._id
+end
+
+function Object:GetParentIds(): {[number]: string}
+    return self._parents_ids
 end
 
 function Object.New<V, M>(variables: V, methods: M, id: string, ...): InterObjectClass<V, M>
