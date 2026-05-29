@@ -4,6 +4,7 @@ LuCid is a lightweight Luau package designed to simplify Object-Oriented Program
 
 > [!WARNING]  
 > This project is currently in **Beta**. Expect breaking changes and use with caution.
+> Versions below 0.2.4 are unusable.
 
 ## Features
 
@@ -18,7 +19,7 @@ LuCid is a lightweight Luau package designed to simplify Object-Oriented Program
 Add LuCid to your `wally.toml` dependencies:
 
 ```toml
-LuCid = "bigfootpp/lucid@0.1.0"
+LuCid = "bigfootpp/lucid@0.2.4"
 ```
 
 ## Quick Start
