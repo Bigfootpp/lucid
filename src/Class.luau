@@ -10,7 +10,7 @@ Class.__index = Class
 
 type ClassType = {
     _id: string,
-    _parent_ids: {[number]: string},
+    _parentIds: {[number]: string},
     _methods: {[string]: (self: any, ...any) -> (...any)},
     _variables: {[string]: any}
 }
@@ -30,14 +30,14 @@ function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): ClassObj
     local self = setmetatable({}, Class)
     self._variables = TableUtils.Extend(variables, parentClass and parentClass._variables or {})
     self._methods = TableUtils.Extend(methods, parentClass and parentClass._methods or {})
-    self._parent_ids = parentClass and TableUtils.Extend(parentClass._parent_ids, parentClass._id) or {}
+    self._parentIds = parentClass and TableUtils.Extend(parentClass._parentIds, parentClass._id) or {}
     self._id = PREFIX .. "_" .. counter
 
     return self :: ClassObject<V, M, P?>
 end
 
 function Class.create(self: any, ...): any
-    return Object.New(self._variables, self._methods, self._id, self._parent_ids, ...)
+    return Object.New(self._variables, self._methods, self._id, self._parentIds, ...)
 end
 
 return Class
