@@ -8,32 +8,28 @@ local Object = require(script.Parent.Object)
 local Class = {}
 Class.__index = Class
 
-type ClassType = {
-    _id: string,
-    _parentIds: {[number]: string},
-    _methods: {[string]: (self: any, ...any) -> (...any)},
-    _variables: {[string]: any}
-}
-
 type GetMethods<C> = index<C & { _methods: {} }, "_methods">
 type GetVariables<C> = index<C & { _variables: {} }, "_variables">
 
-export type ClassObject<V, M, P> = ClassType & {
+export type ClassObject<V, M, P> = {
+    _id: string,
+    _parentIds: {[number]: string},
+    _variables: V,
+    _methods: M,
     create: (self: any, ...any) -> Object.InterObjectClass<V & GetVariables<P>, M & GetMethods<P>>
 }
 
 function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): ClassObject<V, M, P>
-    -- Typing
-    parentClass = parentClass :: ClassType
+    local parent: any = parentClass
     
     counter = counter + 1
-    local self = setmetatable({}, Class)
-    self._variables = TableUtils.Extend(variables, parentClass and parentClass._variables or {})
-    self._methods = TableUtils.Extend(methods, parentClass and parentClass._methods or {})
-    self._parentIds = parentClass and TableUtils.Extend(parentClass._parentIds, {parentClass._id}) or {}
+    local self = setmetatable({} :: any, Class)
+    self._variables = TableUtils.Extend(variables, parent and parent._variables or {})
+    self._methods = TableUtils.Extend(methods, parent and parent._methods or {})
+    self._parentIds = parent and TableUtils.Extend(parent._parentIds, {parent._id}) or {}
     self._id = PREFIX .. "_" .. counter
 
-    return self :: ClassObject<V, M, P?>
+    return self :: ClassObject<V, M, P>
 end
 
 function Class.create(self: any, ...): any
