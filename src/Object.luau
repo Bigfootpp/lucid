@@ -5,7 +5,9 @@ Object.__index = Object
 
 type ObjectType = {
     _id: string,
-    _parentIds: {[number]: string}
+    _parentIds: {[number]: string},
+    GetId: (self: any) -> string,
+    GetParentIds: (self: any) -> {[number]: string}
 }
 
 export type InterObjectClass<V, M> = ObjectType & V & M

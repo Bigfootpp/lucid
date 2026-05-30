@@ -42,7 +42,7 @@ function main()
 			self.legs = legs
 			self.tail = tail
 		end,
-		speak = function(self)
+		speak = function(self: any)
 			return ("The %s meows"):format(self.species)
 		end,
 	}
