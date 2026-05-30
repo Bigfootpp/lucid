@@ -15,14 +15,14 @@ type ClassType = {
     _variables: {[string]: any}
 }
 
-type GetMethods<C> = index<C, "_methods">
-type GetVariables<C> = index<C, "_variables">
+type GetMethods<C> = index<C & { _methods: {} }, "_methods">
+type GetVariables<C> = index<C & { _variables: {} }, "_variables">
 
 export type ClassObject<V, M, P> = ClassType & {
     create: (self: any, ...any) -> Object.InterObjectClass<V & GetVariables<P>, M & GetMethods<P>>
 }
 
-function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): ClassObject<V, M, P?>
+function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): ClassObject<V, M, P>
     -- Typing
     parentClass = parentClass :: ClassType
     
