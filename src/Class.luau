@@ -30,7 +30,7 @@ function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): ClassObj
     local self = setmetatable({}, Class)
     self._variables = TableUtils.Extend(variables, parentClass and parentClass._variables or {})
     self._methods = TableUtils.Extend(methods, parentClass and parentClass._methods or {})
-    self._parentIds = parentClass and TableUtils.Extend(parentClass._parentIds, parentClass._id) or {}
+    self._parentIds = parentClass and TableUtils.Extend(parentClass._parentIds, {parentClass._id}) or {}
     self._id = PREFIX .. "_" .. counter
 
     return self :: ClassObject<V, M, P?>
