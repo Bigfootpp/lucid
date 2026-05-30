@@ -16,7 +16,10 @@ export type ClassObject<V, M, P> = {
     _parentIds: {[number]: string},
     _variables: V,
     _methods: M,
-    create: (self: any, ...any) -> Object.InterObjectClass<V & GetVariables<P>, M & GetMethods<P>>
+    create: (self: any, ...any) -> Object.InterObjectClass<
+        V & GetVariables<P>, 
+        typeof(setmetatable({} :: M, {} :: { __index: GetMethods<P> }))
+    >
 }
 
 function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): ClassObject<V, M, P>
