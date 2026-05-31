@@ -10,7 +10,7 @@ export type ObjectType = {
     GetParentIds: (self: any) -> {[number]: string}
 }
 
-export type InterObjectClass<V, M> = ObjectType & V & M
+export type InterObjectClass<V, M> = setmetatable<ObjectType & V, { __index: M }>
 
 function Object:GetId(): string
     return self._id
