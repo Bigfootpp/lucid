@@ -3,7 +3,7 @@ local TableUtils = require(script.Parent.Parent.TableUtil)
 local Object = {}
 Object.__index = Object
 
-type ObjectType = {
+export type ObjectType = {
     _id: string,
     _parentIds: {[number]: string},
     GetId: (self: any) -> string,

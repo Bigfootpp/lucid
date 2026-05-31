@@ -8,21 +8,23 @@ local Object = require(script.Parent.Object)
 local Class = {}
 Class.__index = Class
 
-type GetMethods<C> = index<C & { _methods: {} }, "_methods">
-type GetVariables<C> = index<C & { _variables: {} }, "_variables">
+export type GetMethods<C> = index<C & { _methods: {} }, "_methods">
+export type GetVariables<C> = index<C & { _variables: {} }, "_variables">
 
 export type ClassObject<V, M, P> = {
     _id: string,
     _parentIds: {[number]: string},
     _variables: V,
     _methods: M,
-    create: (self: any, ...any) -> Object.InterObjectClass<
+    create: (self: any, ...any) -> InstantiatedObject<V, M, P>
+}
+
+export type InstantiatedObject<V, M, P> = Object.InterObjectClass<
         V & GetVariables<P>, 
         typeof(setmetatable({} :: M, {} :: { __index: GetMethods<P> }))
     >
-}
 
-function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): ClassObject<V, M, P>
+function Class.New<V, M, P>(variables: V, methods: M & {[string]: (self: InstantiatedObject<V, M, P>, ...any) -> ...any}, parentClass: P?): ClassObject<V, M, P>
     local parent: any = parentClass
     
     counter = counter + 1
