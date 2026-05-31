@@ -36,7 +36,7 @@ function main()
 		end,
 	}
 
-	local Cat = class(Animal)({ tail = true}) {
+	local Cat = class(Animal) { tail = true} {
 		__init = function(self, species: string, legs: number, tail: boolean)
 			self.species = species
 			self.legs = legs
@@ -71,7 +71,7 @@ function main()
 	local Parent = class() { value = 0 } {
 		get = function(self) return self.value end,
 	}
-	local Child = class(Parent)({ value = 10 }) {
+	local Child = class(Parent) { value = 10 } {
 		get = function(self) return self.value * 2 end,
 	}
 	local parentObj = Parent:create()
