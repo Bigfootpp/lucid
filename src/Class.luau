@@ -45,13 +45,13 @@ end
 export type ClassObject<V, M, P> = {
     _id: string,
     _parentIds: {[number]: string},
-    _variables: V,
+    _variables: TypeUtils.DeepUnseal<TypeUtils.Merge<V, GetVariables<P>>>,
     _methods: M,
     create: (self: any, ...any) -> InstantiatedObject<V, M, P>
 }
 
 export type InstantiatedObject<V, M, P> = Object.InterObjectClass<
-    TypeUtils.DeepUnseal<TypeUtils.Merge<V, GetVariables<P>>>, 
+    TypeUtils.Merge<V, GetVariables<P>>, 
     TypeUtils.Merge<M, GetMethods<P>>
 >
 
