@@ -4,7 +4,7 @@ registry = "test"
 
 [[package]]
 name = "bigfootpp/lucid"
-version = "0.2.4"
+version = "0.3.0"
 dependencies = [["TableUtil", "sleitnick/table-util@1.2.1"]]
 
 [[package]]

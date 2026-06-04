@@ -1,4 +1,7 @@
 local HttpService = game:GetService("HttpService")
+local TableUtils = require(script.Parent.Parent.TableUtil)
+local TypeUtils = require(script.Parent.TypeUtils)
+
 local PREFIX = HttpService:GenerateGUID(false)
 local counter = 0
 
@@ -7,26 +10,69 @@ local Object = require(script.Parent.Object)
 local Class = {}
 Class.__index = Class
 
-type ClassType = {
-    _id: string
-}
-
-export type ClassObject<T, U> = ClassType & {
-    create: (self: any, ...any) -> Object.InterObjectClass<T, U>
-}
-
-function Class.New<T, U>(variables: T, methods: U): ClassObject<T, U>
-    counter = counter + 1
-    local self = setmetatable({}, Class)
-    self._variables = variables
-    self._methods = methods
-    self._id = PREFIX .. "_" .. counter
-
-    return self :: ClassObject<T, U>
+type function GetMethods(C)
+    if not C:is("table") then
+        return types.newtable()
+    end
+    
+    for propKey, propData in pairs(C:properties()) do
+        if propKey:is("singleton") and propKey:value() == "_methods" then
+            if propData.read then
+                return propData.read
+            end
+        end
+    end
+    
+    return types.newtable()
 end
 
-function Class.create(self: any, ...): any
-    return Object.New(self._variables, self._methods, self._id, ...)
+export type function GetVariables(C)
+    if not C:is("table") then
+        return types.newtable()
+    end
+    
+    for propKey, propData in C:properties() do
+        if propKey:is("singleton") and propKey:value() == "_variables" then
+            if propData.read then
+                return propData.read
+            end
+        end
+    end
+    
+    return types.newtable()
+end
+
+export type ClassObject<V, M, P> = {
+    _id: string,
+    _parentIds: {[number]: string},
+    _variables: TypeUtils.DeepUnseal<TypeUtils.Merge<V, GetVariables<P>>>,
+    _methods: M,
+    create: (self: any, ...any) -> InstantiatedObject<V, M, P>
+}
+
+export type InstantiatedObject<V, M, P> = Object.InterObjectClass<
+    TypeUtils.Merge<V, GetVariables<P>>, 
+    TypeUtils.Merge<M, GetMethods<P>>
+>
+
+export type FlatInstantiatedObject<V, M, P> = Object.FlatInterObjectClass<
+    TypeUtils.Merge<V, GetVariables<P>>, 
+    TypeUtils.Merge<M, GetMethods<P>>
+>
+
+function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): ClassObject<V, TypeUtils.Clean<M>, P>
+    counter = counter + 1
+    local self = setmetatable({}, Class)
+    self._variables = parentClass and TableUtils.Assign(parentClass._variables, variables) or variables
+    self._methods = parentClass and TableUtils.Assign(parentClass._methods, methods) or methods
+    self._parentIds = parentClass and TableUtils.Extend(parentClass._parentIds, {parentClass._id}) or {}
+    self._id = PREFIX .. "_" .. counter
+
+    return self :: ClassObject<V, M, P>
+end
+
+function Class.create(self, ...)
+    return Object.New(self._variables, self._methods, self._id, self._parentIds, ...)
 end
 
 return Class
