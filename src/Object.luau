@@ -1,4 +1,5 @@
 local TableUtils = require(script.Parent.Parent.TableUtil)
+local TypeUtils = require(script.Parent.TypeUtils)
 
 local Object = {}
 Object.__index = Object
@@ -10,7 +11,8 @@ export type ObjectType = {
     GetParentIds: (self: any) -> {[number]: string}
 }
 
-export type InterObjectClass<V, M> = setmetatable<ObjectType & V, { __index: M }>
+export type InterObjectClass<V, M> = setmetatable<TypeUtils.Merge<V, ObjectType>, { __index: M }>
+export type FlatInterObjectClass<V, M> = TypeUtils.Merge<TypeUtils.Merge<V, M>, ObjectType>
 
 function Object:GetId(): string
     return self._id
