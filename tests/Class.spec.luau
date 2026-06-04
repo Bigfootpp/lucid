@@ -281,10 +281,13 @@ function main()
 	assert(moto.hasSidecar == true, "Moto sidecar")
 	assert(moto:drive() == "Driving at 150 km/h", "Moto drive")
 
-	-- Each child has own parentIds (same parent, different class IDs)
+	-- Both inherit from same Vehicle -> same parent ID in parentIds
 	assert(#car:GetParentIds() == 1, "Car has 1 parent")
 	assert(#moto:GetParentIds() == 1, "Moto has 1 parent")
-	assert(car:GetParentIds()[1] ~= moto:GetParentIds()[1], "Different class IDs")
+	assert(car:GetParentIds()[1] == moto:GetParentIds()[1], "Same parent Vehicle ID")
+
+	-- But different instances -> different GetId()
+	assert(car:GetId() ~= moto:GetId(), "Different instance IDs")
 
 	-- ==========================================
 	-- 11. GETID UNIQUENESS
