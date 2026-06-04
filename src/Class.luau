@@ -51,7 +51,7 @@ export type ClassObject<V, M, P> = {
 }
 
 export type InstantiatedObject<V, M, P> = Object.InterObjectClass<
-    TypeUtils.Merge<V, GetVariables<P>>, 
+    TypeUtils.DeepUnseal<TypeUtils.Merge<V, GetVariables<P>>>, 
     TypeUtils.Merge<M, GetMethods<P>>
 >
 
