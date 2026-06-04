@@ -61,13 +61,11 @@ export type FlatInstantiatedObject<V, M, P> = Object.FlatInterObjectClass<
 >
 
 function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): ClassObject<V, TypeUtils.Clean<M>, P>
-    local parent = parentClass
-    
     counter = counter + 1
     local self = setmetatable({}, Class)
-    self._variables = TableUtils.Extend(variables, parent and parent._variables or {})
-    self._methods = TableUtils.Extend(methods, parent and parent._methods or {})
-    self._parentIds = parent and TableUtils.Extend(parent._parentIds, {parent._id}) or {}
+    self._variables = parentClass and TableUtils.Assign(parentClass._variables, variables) or variables
+    self._methods = parentClass and TableUtils.Assign(parentClass._methods, methods) or methods
+    self._parentIds = parentClass and TableUtils.Extend(parentClass._parentIds, {parentClass._id}) or {}
     self._id = PREFIX .. "_" .. counter
 
     return self :: ClassObject<V, M, P>
