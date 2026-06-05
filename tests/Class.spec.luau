@@ -100,9 +100,6 @@ function main()
 	local dogParentIds = dog:GetParentIds()
 	assert(#dogParentIds == 2, "Expected two parent ids, got " .. #dogParentIds)
 
-	-- Verify parent IDs are in correct order (closest first or oldest first?)
-	-- Current implementation: parent._parentIds extended with {parent._id}
-	-- So order should be: [Mammal_id, LivingBeing_id]
 	assert(dogParentIds[1] ~= dogParentIds[2], "Parent IDs should be unique")
 
 	-- ==========================================
@@ -112,8 +109,8 @@ function main()
 		getValue = function(self) return self.value end,
 	}
 
-	local Derived = class(Base) { value = 200 } { -- override value
-		getValue = function(self) return self.value * 2 end, -- override method
+	local Derived = class(Base) { value = 200 } {
+		getValue = function(self) return self.value * 2 end,
 	}
 
 	local baseObj = Base:create()
@@ -157,7 +154,6 @@ function main()
 	assert(b.items["sword"] == nil, "Instance B must not share the table with A")
 	assert(Container:create().items["sword"] == nil, "New instance must not be tainted")
 
-	-- Test with inheritance too
 	local ParentWithTable = class() { data = {} } {
 		add = function(self, k, v) self.data[k] = v end,
 	}
@@ -186,7 +182,6 @@ function main()
 	assert(#g2:GetParentIds() == 1, "G2 should have 1 parent")
 	assert(#g3:GetParentIds() == 2, "G3 should have 2 parents")
 
-	-- Verify IDs are strings and unique
 	local allIds = {}
 	for _, id in ipairs(g3:GetParentIds()) do
 		assert(type(id) == "string", "Parent ID must be string")
@@ -281,12 +276,10 @@ function main()
 	assert(moto.hasSidecar == true, "Moto sidecar")
 	assert(moto:drive() == "Driving at 150 km/h", "Moto drive")
 
-	-- Both inherit from same Vehicle -> same parent ID in parentIds
 	assert(#car:GetParentIds() == 1, "Car has 1 parent")
 	assert(#moto:GetParentIds() == 1, "Moto has 1 parent")
 	assert(car:GetParentIds()[1] == moto:GetParentIds()[1], "Same parent Vehicle ID")
 
-	-- But different instances -> different GetId()
 	assert(car:GetId() ~= moto:GetId(), "Different instance IDs")
 
 	-- ==========================================
