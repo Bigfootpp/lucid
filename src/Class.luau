@@ -45,6 +45,7 @@ end
 export type ClassObject<V, M, P> = {
     _id: string,
     _parentIds: {[number]: string},
+    _parentClass: P?,
     _variables: TypeUtils.DeepUnseal<TypeUtils.Merge<V, GetVariables<P>>>,
     _methods: M,
     create: (self: any, ...any) -> InstantiatedObject<V, M, P>
@@ -62,10 +63,11 @@ export type FlatInstantiatedObject<V, M, P> = Object.FlatInterObjectClass<
 
 function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): ClassObject<V, TypeUtils.Clean<M>, P>
     counter = counter + 1
-    local self = setmetatable({}, Class)
+    local self = setmetatable({}, Class) :: ClassObject<V, M, P>
     self._variables = parentClass and TableUtils.Assign(parentClass._variables, variables) or variables
     self._methods = parentClass and TableUtils.Assign(parentClass._methods, methods) or methods
     self._parentIds = parentClass and TableUtils.Extend(parentClass._parentIds, {parentClass._id}) or {}
+    self._parentClass = parentClass
     self._id = PREFIX .. "_" .. counter
 
     return self :: ClassObject<V, M, P>
