@@ -1,62 +1,83 @@
 export type function Merge(tblA, tblB)
-    assert(tblA:is("table"), "First argument need to be a table")
-    assert(tblB:is("table"), "Second argument need to be a table")
+    assert(tblA.tag == "table", "First argument need to be a table")
+    assert(tblB.tag == "table", "Second argument need to be a table")
 
-    local result = types.copy(tblA)
-    
-    for keyType, valueTypes in tblB:properties() do
-        local valueType = valueTypes.write or valueTypes.read
-        
-        result:setproperty(keyType, valueType)
+    local bProps = tblB:properties()
+    if next(bProps) == nil then
+        return tblA
     end
-    
-    return result
+
+    local aProps = tblA:properties()
+    if next(aProps) == nil then
+        return tblB
+    end
+
+    local mergedProps = {}
+    for k, v in aProps do
+        mergedProps[k] = v
+    end
+    for k, v in bProps do
+        mergedProps[k] = v.write or v.read
+    end
+
+    local indexer = tblB:indexer() or tblA:indexer()
+    local metatable = tblB:metatable() or tblA:metatable()
+
+    return types.newtable(mergedProps, indexer, metatable)
 end
 
 export type function Clean(tbl)
-    if not tbl:is("table") then
+    if tbl.tag ~= "table" then
         return tbl
     end
 
-    local cleanTable = types.newtable()
-
-    for keyType, valueTypes in tbl:properties() do
-        local valueType = valueTypes.write or valueTypes.read
-        cleanTable:setproperty(keyType, valueType)
+    local props = tbl:properties()
+    if next(props) == nil then
+        return types.newtable()
     end
 
-    return cleanTable
+    local cleanProps = {}
+    for keyType, valueTypes in props do
+        cleanProps[keyType] = valueTypes.write or valueTypes.read
+    end
+
+    return types.newtable(cleanProps)
 end
 
 export type function Unseal(tbl)
-    if not tbl:is("table") then
+    if tbl.tag ~= "table" then
         return tbl
     end
     
-    local newTable = types.newtable()
-    
-    for name, prop in tbl:properties() do
-        newTable:setproperty(name, prop.read)
+    local props = tbl:properties()
+    local newProps = {}
+    for name, prop in props do
+        newProps[name] = prop.read
     end
     
-    newTable:setindexer(types.string, types.any)
+    local indexer = {
+        index = types.string,
+        readresult = types.any,
+        writeresult = types.any
+    }
     
-    return newTable
+    return types.newtable(newProps, indexer, tbl:metatable())
 end
 
 export type function DeepUnseal(tbl)
     local visited = {}
 
     local function unsealImpl(ty)
-        if ty:is("union") then
+        local tag = ty.tag
+        if tag == "union" then
             local components = {}
-            for _, component in ipairs(ty:components()) do
-                table.insert(components, unsealImpl(component))
+            for i, component in ipairs(ty:components()) do
+                components[i] = unsealImpl(component)
             end
             return types.unionof(unpack(components))
         end
 
-        if not ty:is("table") then
+        if tag ~= "table" then
             return ty
         end
         
@@ -70,8 +91,7 @@ export type function DeepUnseal(tbl)
         for key, prop in ty:properties() do
             local propType = prop.read
             if propType then
-                local unsealedPropType = unsealImpl(propType)
-                newTable:setproperty(key, unsealedPropType)
+                newTable:setproperty(key, unsealImpl(propType))
             end
         end
         
@@ -80,7 +100,7 @@ export type function DeepUnseal(tbl)
         return newTable
     end
     
-    if not tbl:is("table") then
+    if tbl.tag ~= "table" then
         return tbl
     end
     
