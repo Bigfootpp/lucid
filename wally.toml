@@ -19,6 +19,5 @@ include = [
 ]
 
 [dependencies]
-TableUtil = "sleitnick/table-util@1.2.1"
 
 [dev-dependencies]

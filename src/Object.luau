@@ -1,4 +1,4 @@
-local TableUtils = require(script.Parent.Parent.TableUtil)
+local TableUtils = require(script.Parent.Utils.Table)
 local TypeUtils = require(script.Parent.TypeUtils)
 
 local Object = {}
@@ -23,7 +23,7 @@ function Object:GetParentIds(): {[number]: string}
 end
 
 function Object.New<V, M>(variables: V, methods: M, id: string, parentIds: {[number]: string}, ...): InterObjectClass<V, M>
-    local self = TableUtils.Copy(variables, true) :: ObjectType
+    local self = TableUtils.DeepCopy(variables) :: ObjectType
     self._parentIds = parentIds
     self._id = id
 
