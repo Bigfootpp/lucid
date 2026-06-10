@@ -6,12 +6,23 @@ function TableUtil.Update<T, E>(target: T, extension: E, overwrite: boolean?): T
     if overwrite == nil then overwrite = true end
     assert(typeof(target) == "table", `Expected table for 'target', got '{typeof(target)}'`)
     assert(typeof(extension) == "table", `Expected table for 'extension', got '{typeof(extension)}'`)
-    assert(typeof(overwrite) == "boolean", `Expected table for 'overwrite', got '{typeof(overwrite)}'`)
+    assert(typeof(overwrite) == "boolean", `Expected boolean for 'overwrite', got '{typeof(overwrite)}'`)
 
     for k, v in extension do
         if overwrite or target[k] == nil then
             target[k] = v
         end
+    end
+
+    return target 
+end
+
+function TableUtil.Extend<T, E>(target: T, extension: E): TypeUtils.Extend<T, E>
+    assert(typeof(target) == "table", `Expected table for 'target', got '{typeof(target)}'`)
+    assert(typeof(extension) == "table", `Expected table for 'extension', got '{typeof(extension)}'`)
+
+    for _, v in extension do
+        table.insert(target, v)
     end
 
     return target 

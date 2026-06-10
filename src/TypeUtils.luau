@@ -87,5 +87,22 @@ export type function DeepUnseal(tbl)
     return unsealImpl(tbl)
 end
 
+export type function Extend(tblA, tblB)
+    assert(tblA:is("table"), "First argument need to be a table")
+    assert(tblB:is("table"), "Second argument need to be a table")
+
+    local result = types.copy(tblA)
+    
+    local idxA = tblA:readindexer()
+    local idxB = tblB:readindexer()
+    
+    if idxA and idxB then
+        result:setindexer(idxA.index, types.unionof(idxA.result, idxB.result))
+    elseif idxB then
+        result:setindexer(idxB.index, idxB.result)
+    end
+    
+    return result
+end
 
 return {}
