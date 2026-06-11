@@ -24,7 +24,9 @@ function Object.New<C>(Class: C, ...): Types.InterObjectClass<Types.GetVariables
 
     setmetatable(methods, Object)
     setmetatable(self, {
-        __index = methods
+        __index = function(_, key)
+            return methods[key]
+        end
     })
 
     if methods["__init"] then 
