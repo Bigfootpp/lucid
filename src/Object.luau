@@ -12,6 +12,21 @@ function Object:GetParentIds(): {[number]: string}
     return self._parentIds
 end
 
+local function defineMetatable(self, methods)
+    setmetatable(methods, Object)
+    setmetatable(self, {
+        __index = function(_, key)
+            return methods[key]
+        end
+    })
+end
+
+local function callInit(self, methods, ...)
+    if methods["__init"] then 
+        methods["__init"](self, ...) 
+    end
+end
+
 function Object.New<C>(Class: C, ...): Types.InterObjectClass<Types.GetVariables<C>, Types.GetMethods<C>, Types.GetParentClass<C>>
     local parentIds: {number} = Class._parentIds
     local id: number = Class._id
@@ -24,16 +39,8 @@ function Object.New<C>(Class: C, ...): Types.InterObjectClass<Types.GetVariables
     self._parentClass = parentClass
     self._id = id
 
-    setmetatable(methods, Object)
-    setmetatable(self, {
-        __index = function(_, key)
-            return methods[key]
-        end
-    })
-
-    if methods["__init"] then 
-        methods["__init"](self, ...) 
-    end
+    defineMetatable(self, methods)
+    callInit(self, methods, unpack({...}))
 
     return self
 end
