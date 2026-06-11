@@ -1,50 +1,17 @@
 local TableUtils = require(script.Parent.Utils.Table)
-local TypeUtils = require(script.Parent.Utils.TypeUtils)
+local Types = require(script.Parent.Types)
 
 local Object = {}
 Object.__index = Object
 
-export type function GetMethods(C)
-    if not C:is("table") then
-        return types.newtable()
-    end
-    
-    for propKey, propData in pairs(C:properties()) do
-        if propKey:is("singleton") and propKey:value() == "_methods" then
-            if propData.read then
-                return propData.read
-            end
-        end
-    end
-    
-    return types.newtable()
-end
+export type GetMethods<C> = Types.GetMethods<C>
 
-export type function GetVariables(C)
-    if not C:is("table") then
-        return types.newtable()
-    end
-    
-    for propKey, propData in C:properties() do
-        if propKey:is("singleton") and propKey:value() == "_variables" then
-            if propData.read then
-                return propData.read
-            end
-        end
-    end
-    
-    return types.newtable()
-end
+export type GetVariables<C> = Types.GetVariables<C>
 
-export type ObjectType = {
-    _id: string,
-    _parentIds: {[number]: string},
-    GetId: (self: any) -> string,
-    GetParentIds: (self: any) -> {[number]: string}
-}
+export type ObjectType = Types.ObjectType
 
-export type InterObjectClass<V, M> = setmetatable<TypeUtils.Merge<V, ObjectType>, { __index: M }>
-export type FlatInterObjectClass<V, M> = TypeUtils.Merge<TypeUtils.Merge<V, M>, ObjectType>
+export type InterObjectClass<V, M> = Types.InterObjectClass<V, M>
+export type FlatInterObjectClass<V, M> = Types.FlatInterObjectClass<V, M>
 
 function Object:GetId(): string
     return self._id
