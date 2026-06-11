@@ -1,6 +1,6 @@
 --!strict
 local Class = require(script.Class)
-local TypeUtils = require(script.TypeUtils)
+local TypeUtils = require(script.Utils.TypeUtils)
 
 local function class<P>(parentClass: P?)
     return function<V>(variables: V)

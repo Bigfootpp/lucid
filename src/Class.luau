@@ -1,6 +1,6 @@
 local HttpService = game:GetService("HttpService")
 local TableUtils = require(script.Parent.Utils.Table)
-local TypeUtils = require(script.Parent.TypeUtils)
+local TypeUtils = require(script.Parent.Utils.TypeUtils)
 
 local PREFIX = HttpService:GenerateGUID(false)
 local counter = 0
@@ -10,37 +10,8 @@ local Object = require(script.Parent.Object)
 local Class = {}
 Class.__index = Class
 
-type function GetMethods(C)
-    if not C:is("table") then
-        return types.newtable()
-    end
-    
-    for propKey, propData in pairs(C:properties()) do
-        if propKey:is("singleton") and propKey:value() == "_methods" then
-            if propData.read then
-                return propData.read
-            end
-        end
-    end
-    
-    return types.newtable()
-end
-
-export type function GetVariables(C)
-    if not C:is("table") then
-        return types.newtable()
-    end
-    
-    for propKey, propData in C:properties() do
-        if propKey:is("singleton") and propKey:value() == "_variables" then
-            if propData.read then
-                return propData.read
-            end
-        end
-    end
-    
-    return types.newtable()
-end
+type GetMethods<C> = Object.GetMethods<C>
+type GetVariables<C> = Object.GetVariables<C>
 
 export type ClassObject<V, M, P> = {
     _id: string,
@@ -74,7 +45,7 @@ function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): ClassObj
 end
 
 function Class.create(self, ...)
-    return Object.New(self._variables, self._methods, self._id, self._parentIds, ...)
+    return Object.New(self, ...)
 end
 
 return Class

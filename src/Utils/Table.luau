@@ -1,5 +1,4 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local TypeUtils = require(ReplicatedStorage.Packages.LuCid.TypeUtils)
+local TypeUtils = require(script.Parent.TypeUtils)
 local TableUtil = {}
 
 function TableUtil.Update<T, E>(target: T, extension: E, overwrite: boolean?): TypeUtils.Merge<T, E>
