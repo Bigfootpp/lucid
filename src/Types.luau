@@ -32,15 +32,32 @@ export type function GetVariables(C)
     return types.newtable()
 end
 
-export type ObjectType = {
+export type function GetParentClass(C)
+    if not C:is("table") then
+        return types.singleton(nil)
+    end
+    
+    for propKey, propData in C:properties() do
+        if propKey:is("singleton") and propKey:value() == "_parentClass" then
+            if propData.read then
+                return propData.read
+            end
+        end
+    end
+    
+    return types.singleton(nil)
+end
+
+export type ObjectType<P> = {
     _id: string,
     _parentIds: {[number]: string},
+    _parentClass: P,
     GetId: (self: any) -> string,
     GetParentIds: (self: any) -> {[number]: string}
 }
 
-export type InterObjectClass<V, M> = setmetatable<TypeUtils.Merge<V, ObjectType>, { __index: M }>
-export type FlatInterObjectClass<V, M> = TypeUtils.Merge<TypeUtils.Merge<V, M>, ObjectType>
+export type InterObjectClass<V, M, P> = setmetatable<TypeUtils.Merge<V, ObjectType<P>>, { __index: M }>
+export type FlatInterObjectClass<V, M, P> = TypeUtils.Merge<TypeUtils.Merge<V, M>, ObjectType<P>>
 
 export type ClassObject<V, M, P> = {
     _id: string,
@@ -53,12 +70,14 @@ export type ClassObject<V, M, P> = {
 
 export type InstantiatedObject<V, M, P> = InterObjectClass<
     TypeUtils.Merge<V, GetVariables<P>>, 
-    TypeUtils.Merge<M, GetMethods<P>>
+    TypeUtils.Merge<M, GetMethods<P>>,
+    P
 >
 
 export type FlatInstantiatedObject<V, M, P> = FlatInterObjectClass<
     TypeUtils.Merge<V, GetVariables<P>>, 
-    TypeUtils.Merge<M, GetMethods<P>>
+    TypeUtils.Merge<M, GetMethods<P>>,
+    P
 >
 
 return {}
