@@ -55,7 +55,7 @@ function Object:GetParentIds(): {[number]: string}
 end
 
 function Object.New<C>(Class: C, ...): InterObjectClass<GetVariables<C>, GetMethods<C>>
-    local parentIds: {number} = Class._parentClass
+    local parentIds: {number} = Class._parentIds
     local id: number = Class._id
     local variables: GetVariables<C> = Class._variables
     local methods: GetMethods<C> = Class._methods
