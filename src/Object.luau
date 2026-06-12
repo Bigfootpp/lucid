@@ -6,6 +6,19 @@ Object.__index = Object
 
 local superContext = nil
 
+local bindContext = function(context, method)
+    return function(...)
+        local prev = superContext
+        superContext = context
+        local success, result = pcall(method, ...)
+        superContext = prev
+        if not success then
+            error(result)
+        end
+        return result
+    end
+end
+
 function Object:GetId(): string
     return self._id
 end
@@ -33,9 +46,7 @@ function Object:super()
 
             local method = parentClass._methods[key]
             if type(method) == "table" and rawget(method, "_definedIn") then
-                return function(...)
-                    return method(self, ...)
-                end
+                return bindContext(parentClass, method)
             end
 
             local objMethod = Object[key]
@@ -57,16 +68,7 @@ local function defineMetatable(self, methods)
             local method = methods[key]
 
             if type(method) == "table" and rawget(method, "_definedIn") then
-                return function(...)
-                    local prev = superContext
-                    superContext = rawget(method, "_definedIn")
-                    local success, result = pcall(method, ...)
-                    superContext = prev
-                    if not success then
-                        error(result)
-                    end
-                    return result
-                end
+                return bindContext(rawget(method, "_definedIn"), method)
             end
 
             return method
