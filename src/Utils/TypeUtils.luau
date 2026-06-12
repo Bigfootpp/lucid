@@ -85,6 +85,10 @@ export type function DeepUnseal(tbl)
             return visited[ty]
         end
         
+        if ty:readindexer() then
+            return ty
+        end
+        
         local newTable = types.newtable()
         visited[ty] = newTable
         

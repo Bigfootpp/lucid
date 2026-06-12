@@ -62,7 +62,7 @@ local function defineMetatable(self, methods)
                     superContext = rawget(method, "_definedIn")
                     local success, result = pcall(method, ...)
                     superContext = prev
-                    
+
                     if success then
                         return result
                     else
@@ -85,9 +85,9 @@ end
 function Object.New<C>(Class: C, ...): Types.InterObjectClass<Types.GetVariables<C>, Types.GetMethods<C>, Types.GetParentClass<C>>
     local parentIds: {number} = Class._parentIds
     local id: number = Class._id
-    local variables: Types.GetVariables<C> = Class._variables
-    local methods: Types.GetMethods<C> = Class._methods
-    local parentClass: Types.GetParentClass<C> = Class._parentClass
+    local variables: {} = Class._variables
+    local methods: {} = Class._methods
+    local parentClass = Class._parentClass
     
     local self = TableUtils.DeepCopy(variables) :: Types.ObjectType<Types.GetParentClass<C>>
     self._parentIds = parentIds

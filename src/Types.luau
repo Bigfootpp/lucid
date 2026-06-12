@@ -1,51 +1,43 @@
 local TypeUtils = require(script.Parent.Utils.TypeUtils)
 
-export type function GetMethods(C)
+export type function GetClassInfo(C)
+    local result = types.newtable({
+        [types.singleton("_variables")] = types.newtable(),
+        [types.singleton("_methods")] = types.newtable(),
+        [types.singleton("_parentClass")] = types.singleton(nil)
+    })
+    
     if not C:is("table") then
-        return types.newtable()
+        return result
     end
     
-    for propKey, propData in pairs(C:properties()) do
-        if propKey:is("singleton") and propKey:value() == "_methods" then
-            if propData.read then
-                return propData.read
+    for propKey, propData in C:properties() do
+        if propKey:is("singleton") then
+            local keyName = propKey:value()
+            if keyName == "_variables" or keyName == "_methods" or keyName == "_parentClass" then
+                if propData.read then
+                    result:setproperty(propKey, propData.read)
+                end
             end
         end
     end
     
-    return types.newtable()
+    return result
+end
+
+export type function GetMethods(C)
+    local info = GetClassInfo(C)
+    return info:readproperty(types.singleton("_methods"))
 end
 
 export type function GetVariables(C)
-    if not C:is("table") then
-        return types.newtable()
-    end
-    
-    for propKey, propData in C:properties() do
-        if propKey:is("singleton") and propKey:value() == "_variables" then
-            if propData.read then
-                return propData.read
-            end
-        end
-    end
-    
-    return types.newtable()
+    local info = GetClassInfo(C)
+    return info:readproperty(types.singleton("_variables"))
 end
 
 export type function GetParentClass(C)
-    if not C:is("table") then
-        return types.singleton(nil)
-    end
-    
-    for propKey, propData in C:properties() do
-        if propKey:is("singleton") and propKey:value() == "_parentClass" then
-            if propData.read then
-                return propData.read
-            end
-        end
-    end
-    
-    return types.singleton(nil)
+    local info = GetClassInfo(C)
+    return info:readproperty(types.singleton("_parentClass"))
 end
 
 export type ObjectType<P> = {
@@ -69,13 +61,13 @@ export type ClassObject<V, M, P> = {
 }
 
 export type InstantiatedObject<V, M, P> = InterObjectClass<
-    TypeUtils.Merge<V, GetVariables<P>>, 
+    TypeUtils.Merge<TypeUtils.DeepUnseal<V>, GetVariables<P>>, 
     TypeUtils.Merge<M, GetMethods<P>>,
     P
 >
 
 export type FlatInstantiatedObject<V, M, P> = FlatInterObjectClass<
-    TypeUtils.Merge<V, GetVariables<P>>, 
+    TypeUtils.Merge<TypeUtils.DeepUnseal<V>, GetVariables<P>>, 
     TypeUtils.Merge<M, GetMethods<P>>,
     P
 >
