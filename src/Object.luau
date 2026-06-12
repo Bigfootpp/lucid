@@ -60,9 +60,14 @@ local function defineMetatable(self, methods)
                 return function(...)
                     local prev = superContext
                     superContext = rawget(method, "_definedIn")
-                    local result = method(...)
+                    local success, result = pcall(method, ...)
                     superContext = prev
-                    return result
+                    
+                    if success then
+                        return result
+                    else
+                        error(result)
+                    end
                 end
             end
 
