@@ -23,7 +23,7 @@ return function()
 	}
 
 	local cs = ChildSuper:create()
-	assert(cs:getX() == 3, "super chain failed, expected 3, got " .. tostring(cs:getX())) -- 1 * 2 + 1 = 3
+	assert(cs:getX() == 201, "super chain failed, expected 201, got " .. tostring(cs:getX())) -- 100 * 2 + 1 = 201
 
 
 	local A = class() {} {

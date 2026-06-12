@@ -12,7 +12,7 @@ return function()
 
 	local AsyncChild = class(AsyncBase) { val = "child" } {
 		getValAsync = function(self)
-			return self:super():getVal(self)
+			return self:super():getVal()
 		end,
 	}
 
