@@ -12,7 +12,7 @@ return function()
 
 	local DerivedClass = class(BaseClass) { val = 100 } {
 		getVal = function(self)
-			return self:super().getVal(self) + 1
+			return self:super():getVal() + 1
 		end,
 	}
 

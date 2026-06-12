@@ -41,13 +41,15 @@ for _, testScript: Instance in testScripts do
     local success, err = xpcall(function()
         local testFunction = require(testScript)
         testFunction()
-    end, debug.traceback)
+    end, function(errMessage)
+        return tostring(errMessage) .. "\n" .. debug.traceback(nil, 2)
+    end)
 
     if success then
         print(`[{testScript.Name}] Passed`)
     else
         warn(`[{testScript.Name}] Failed`)
-        task.spawn(error, err)
+        warn(err)
     end
 end
 

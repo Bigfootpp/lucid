@@ -12,7 +12,7 @@ return function()
 
 	local InitB = class(InitA) { b = 0 } {
 		__init = function(self)
-			self:super().__init(self)
+			self:super():__init()
 			self.b = 2
 		end,
 	}

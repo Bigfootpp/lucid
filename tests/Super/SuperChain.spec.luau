@@ -12,13 +12,13 @@ return function()
 
 	local MidParent = class(GrandParent) { x = 10 } {
 		getX = function(self)
-			return self:super().getX(self) * 2
+			return self:super():getX() * 2
 		end,
 	}
 
 	local ChildSuper = class(MidParent) { x = 100 } {
 		getX = function(self)
-			return self:super().getX(self) + 1
+			return self:super():getX() + 1
 		end,
 	}
 
@@ -34,13 +34,13 @@ return function()
 
 	local B = class(A) {} {
 		foo = function(self)
-			return self:super().foo(self) .. "B"
+			return self:super():foo() .. "B"
 		end,
 	}
 
 	local C = class(B) {} {
 		foo = function(self)
-			return self:super().foo(self) .. "C"
+			return self:super():foo() .. "C"
 		end,
 	}
 

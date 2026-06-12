@@ -12,7 +12,7 @@ return function()
 
 	local VarDerived = class(VarBase) { name = "derived" } {
 		getName = function(self)
-			return self:super().getName(self)
+			return self:super():getName()
 		end,
 	}
 
