@@ -4,6 +4,8 @@ local Types = require(script.Parent.Types)
 local Object = {}
 Object.__index = Object
 
+local superContext = nil
+
 function Object:GetId(): string
     return self._id
 end
@@ -12,18 +14,66 @@ function Object:GetParentIds(): {[number]: string}
     return self._parentIds
 end
 
-local function defineMetatable(self, methods)
-    setmetatable(methods, Object)
-    setmetatable(self, {
+function Object:super()
+    if not superContext then
+        error("super() called outside of class method")
+    end
+
+    local parentClass = superContext._parentClass
+    if not parentClass then
+        error("No parent class")
+    end
+
+    return setmetatable({}, {
         __index = function(_, key)
-            return methods[key]
+            local var = rawget(self, key)
+            if var ~= nil then
+                return var
+            end
+
+            local method = parentClass._methods[key]
+            if type(method) == "table" and rawget(method, "_definedIn") then
+                return function(...)
+                    return method(self, ...)
+                end
+            end
+
+            local objMethod = Object[key]
+            if type(objMethod) == "function" then
+                return function(...)
+                    return objMethod(self, ...)
+                end
+            end
+
+            return nil
         end
     })
 end
 
-local function callInit(self, methods, ...)
-    if methods["__init"] then 
-        methods["__init"](self, ...) 
+local function defineMetatable(self, methods)
+    setmetatable(methods, Object)
+    setmetatable(self, {
+        __index = function(_, key)
+            local method = methods[key]
+
+            if type(method) == "table" and rawget(method, "_definedIn") then
+                return function(...)
+                    local prev = superContext
+                    superContext = rawget(method, "_definedIn")
+                    local result = method(...)
+                    superContext = prev
+                    return result
+                end
+            end
+
+            return method
+        end
+    })
+end
+
+local function callInit(self, ...)
+    if self["__init"] then
+        self["__init"](self, ...) 
     end
 end
 
@@ -40,7 +90,7 @@ function Object.New<C>(Class: C, ...): Types.InterObjectClass<Types.GetVariables
     self._id = id
 
     defineMetatable(self, methods)
-    callInit(self, methods, unpack({...}))
+    callInit(self, ...)
 
     return self
 end

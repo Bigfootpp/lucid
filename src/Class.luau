@@ -15,6 +15,19 @@ function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): Types.Cl
     local self = setmetatable({}, Class) :: Types.ClassObject<V, M, P>
     self._variables = parentClass and TableUtils.Update(variables, parentClass._variables, false) or variables
     self._methods = parentClass and TableUtils.Update(methods, parentClass._methods, false) or methods
+    
+    for name, func in self._methods do
+        if type(func) == "function" then
+            self._methods[name] = setmetatable({
+                _definedIn = self
+            }, {
+                __call = function(funcSelf, ...)
+                    return func(...)
+                end
+            })
+        end
+    end
+
     self._parentIds = parentClass and TableUtils.Extend({parentClass._id}, parentClass._parentIds) or {}
     self._parentClass = parentClass
     self._id = PREFIX .. "_" .. counter
