@@ -4,18 +4,26 @@ local Types = require(script.Parent.Types)
 local Object = {}
 Object.__index = Object
 
-local superContext = nil
+local superContexts = {}
 
-local function bindContext(self, context, method)
+local function getContext()
+    return superContexts[coroutine.running()]
+end
+
+local function setContext(ctx)
+    superContexts[coroutine.running()] = ctx
+end
+
+local function bindContext(self, ctx, method)
     return function(_, ...)
         local args = table.pack(self, ...)
 
-        local prev = superContext
-        superContext = context
+        local prev = getContext()
+        setContext(ctx)
         
         local success, result = pcall(method, table.unpack(args, 1, args.n))
 
-        superContext = prev
+        setContext(prev)
 
         if not success then
             error(result)
@@ -33,11 +41,11 @@ function Object:GetParentIds(): {[number]: string}
 end
 
 function Object:super()
-    if not superContext then
+    if not getContext() then
         error("super() called outside of class method")
     end
 
-    local parentClass = superContext._parentClass
+    local parentClass = getContext()._parentClass
     if not parentClass then
         error("No parent class")
     end
