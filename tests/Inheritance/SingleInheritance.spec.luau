@@ -26,13 +26,14 @@ return function()
 	}
 
 	local cat = Cat:create("Felis catus", 4, true)
-	assert(cat.species == "Felis catus", "Inherited variable 'species' failed")
-	assert(cat.legs == 4, "Inherited variable 'legs' failed")
-	assert(cat.tail == true, "Own variable 'tail' failed")
-	assert(cat:speak() == "The Felis catus meows", "Method override failed")
+	if not (cat.species == "Felis catus") then return "Inherited variable 'species' failed" end
+	if not (cat.legs == 4) then return "Inherited variable 'legs' failed" end
+	if not (cat.tail == true) then return "Own variable 'tail' failed" end
+	if not (cat:speak() == "The Felis catus meows") then return "Method override failed" end
 
 	local parentIds = cat:GetParentIds()
-	assert(type(parentIds) == "table", "GetParentIds must return a table")
-	assert(#parentIds == 1, "Expected exactly one parent id")
+	if not (type(parentIds) == "table") then return "GetParentIds must return a table" end
+	if not (#parentIds == 1) then return "Expected exactly one parent id" end
 
+	return true
 end

@@ -33,18 +33,19 @@ return function()
 	local car = Car:create(200)
 	local moto = Motorcycle:create(150, true)
 
-	assert(car.wheels == 4, "Car wheels")
-	assert(car.doors == 4, "Car doors")
-	assert(car:drive() == "Driving at 200 km/h", "Car drive")
+	if not (car.wheels == 4) then return "Car wheels" end
+	if not (car.doors == 4) then return "Car doors" end
+	if not (car:drive() == "Driving at 200 km/h") then return "Car drive" end
 
-	assert(moto.wheels == 3, "Moto wheels with sidecar")
-	assert(moto.hasSidecar == true, "Moto sidecar")
-	assert(moto:drive() == "Driving at 150 km/h", "Moto drive")
+	if not (moto.wheels == 3) then return "Moto wheels with sidecar" end
+	if not (moto.hasSidecar == true) then return "Moto sidecar" end
+	if not (moto:drive() == "Driving at 150 km/h") then return "Moto drive" end
 
-	assert(#car:GetParentIds() == 1, "Car has 1 parent")
-	assert(#moto:GetParentIds() == 1, "Moto has 1 parent")
-	assert(car:GetParentIds()[1] == moto:GetParentIds()[1], "Same parent Vehicle ID")
+	if not (#car:GetParentIds() == 1) then return "Car has 1 parent" end
+	if not (#moto:GetParentIds() == 1) then return "Moto has 1 parent" end
+	if not (car:GetParentIds()[1] == moto:GetParentIds()[1]) then return "Same parent Vehicle ID" end
 
-	assert(car:GetId() ~= moto:GetId(), "Different instance IDs")
+	if not (car:GetId() ~= moto:GetId()) then return "Different instance IDs" end
 
+	return true
 end

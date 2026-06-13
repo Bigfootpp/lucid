@@ -26,12 +26,13 @@ return function()
 	}
 
 	local db = Database:create("users", { poolSize = 20, ssl = true })
-	assert(db.host == "localhost", "Inherited host")
-	assert(db.port == 8080, "Inherited port")
-	assert(db.timeout == 5000, "Inherited timeout")
-	assert(db.name == "users", "Own name")
-	assert(db.poolSize == 20, "Own poolSize from opts")
-	assert(db.ssl == true, "Own ssl from opts")
-	assert(db:connect() == "Connecting to localhost:8080 (users)", "Method uses inherited + own")
+	if not (db.host == "localhost") then return "Inherited host" end
+	if not (db.port == 8080) then return "Inherited port" end
+	if not (db.timeout == 5000) then return "Inherited timeout" end
+	if not (db.name == "users") then return "Own name" end
+	if not (db.poolSize == 20) then return "Own poolSize from opts" end
+	if not (db.ssl == true) then return "Own ssl from opts" end
+	if not (db:connect() == "Connecting to localhost:8080 (users)") then return "Method uses inherited + own" end
 
+	return true
 end

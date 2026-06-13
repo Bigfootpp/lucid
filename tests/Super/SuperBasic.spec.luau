@@ -17,6 +17,7 @@ return function()
 	}
 
 	local dc = DerivedClass:create()
-	assert(dc:getVal() == 101, "super basic call failed, expected 101, got " .. tostring(dc:getVal()))
+	if not (dc:getVal() == 101) then return "super basic call failed, expected 101, got " .. tostring(dc:getVal()) end
 
+	return true
 end

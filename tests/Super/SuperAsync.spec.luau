@@ -17,11 +17,12 @@ return function()
 	}
 
 	local asyncChild = AsyncChild:create()
-	assert(asyncChild:getValAsync() == "child", "super in sync context should work")
+	if not (asyncChild:getValAsync() == "child") then return "super in sync context should work" end
 
 	local _, _ = pcall(function()
 		task.delay(0, function()
 			asyncChild:super()
 		end)
 	end)
+	return true
 end

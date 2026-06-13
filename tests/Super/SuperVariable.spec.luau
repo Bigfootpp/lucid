@@ -17,6 +17,7 @@ return function()
 	}
 
 	local vd = VarDerived:create()
-	assert(vd:getName() == "derived", "super with shadowed var: expected 'derived', got " .. tostring(vd:getName()))
+	if not (vd:getName() == "derived") then return "super with shadowed var: expected 'derived', got " .. tostring(vd:getName()) end
 
+	return true
 end

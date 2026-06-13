@@ -35,14 +35,15 @@ return function()
 	}
 
 	local dog = Dog:create("Labrador")
-	assert(dog.alive == true, "Grandparent variable 'alive' failed")
-	assert(dog.warmBlooded == true, "Parent variable 'warmBlooded' failed")
-	assert(dog.breed == "Labrador", "Own variable 'breed' failed")
-	assert(dog:breathe() == "mammal breathing", "Method override chain failed (should use Mammal)")
-	assert(dog:bark() == "Labrador barks", "Own method failed")
+	if not (dog.alive == true) then return "Grandparent variable 'alive' failed" end
+	if not (dog.warmBlooded == true) then return "Parent variable 'warmBlooded' failed" end
+	if not (dog.breed == "Labrador") then return "Own variable 'breed' failed" end
+	if not (dog:breathe() == "mammal breathing") then return "Method override chain failed (should use Mammal)" end
+	if not (dog:bark() == "Labrador barks") then return "Own method failed" end
 
 	local dogParentIds = dog:GetParentIds()
-	assert(#dogParentIds == 2, "Expected two parent ids, got " .. #dogParentIds)
-	assert(dogParentIds[1] ~= dogParentIds[2], "Parent IDs should be unique")
+	if not (#dogParentIds == 2) then return "Expected two parent ids, got " .. #dogParentIds end
+	if not (dogParentIds[1] ~= dogParentIds[2]) then return "Parent IDs should be unique" end
 
+	return true
 end

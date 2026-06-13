@@ -18,7 +18,8 @@ return function()
 	}
 
 	local initB = InitB:create()
-	assert(initB.a == 1, "super init chain: a should be 1")
-	assert(initB.b == 2, "super init chain: b should be 2")
+	if not (initB.a == 1) then return "super init chain: a should be 1" end
+	if not (initB.b == 2) then return "super init chain: b should be 2" end
 
+	return true
 end

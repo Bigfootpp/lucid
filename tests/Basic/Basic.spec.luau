@@ -13,12 +13,12 @@ return function()
 		end,
 	}
 
-	assert(Human, "Class is not created")
+	if not (Human) then return "Class is not created" end
 	local person = Human:create("Jean", 20)
-	assert(person, "Object is not created")
-	assert(person.name == "Jean", "Expected name 'Jean', got " .. tostring(person.name))
-	assert(person.age == 20, "Expected age 20, got " .. tostring(person.age))
-	assert(person:greet() == "Hello my name is Jean, I'm 20 years old", "Greeting failed")
+	if not (person) then return "Object is not created" end
+	if not (person.name == "Jean") then return "Expected name 'Jean', got " .. tostring(person.name) end
+	if not (person.age == 20) then return "Expected age 20, got " .. tostring(person.age) end
+	if not (person:greet() == "Hello my name is Jean, I'm 20 years old") then return "Greeting failed" end
 
 
 	local Base = class() { value = 100, shared = "base" } {
@@ -32,13 +32,13 @@ return function()
 	local baseObj = Base:create()
 	local derivedObj = Derived:create()
 
-	assert(baseObj.value == 100, "Base value should be 100")
-	assert(baseObj.shared == "base", "Base shared should be 'base'")
-	assert(baseObj:getValue() == 100, "Base getValue should return 100")
+	if not (baseObj.value == 100) then return "Base value should be 100" end
+	if not (baseObj.shared == "base") then return "Base shared should be 'base'" end
+	if not (baseObj:getValue() == 100) then return "Base getValue should return 100" end
 
-	assert(derivedObj.value == 200, "Derived value should override to 200")
-	assert(derivedObj.shared == "base", "Derived should inherit 'shared'")
-	assert(derivedObj:getValue() == 400, "Derived getValue should return 400 (200*2)")
+	if not (derivedObj.value == 200) then return "Derived value should override to 200" end
+	if not (derivedObj.shared == "base") then return "Derived should inherit 'shared'" end
+	if not (derivedObj:getValue() == 400) then return "Derived getValue should return 400 (200*2)" end
 
 
 	local ParentClass = class() { value = 0 } {
@@ -52,7 +52,8 @@ return function()
 	local parentObj = ParentClass:create()
 	local childObj = ChildClass:create()
 
-	assert(parentObj:get() == 0, "Parent method must remain unchanged")
-	assert(childObj:get() == 20, "Child override should apply only to child (10*2)")
+	if not (parentObj:get() == 0) then return "Parent method must remain unchanged" end
+	if not (childObj:get() == 20) then return "Child override should apply only to child (10*2)" end
 
+	return true
 end

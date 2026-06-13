@@ -9,9 +9,10 @@ return function()
 		local T = class() { idx = i } {}
 		local obj = T:create()
 		local id = obj:GetId()
-		assert(type(id) == "string", "GetId returns string")
-		assert(not ids[id], "GetId must be unique: " .. id)
+		if not (type(id) == "string") then return "GetId returns string" end
+		if not (not ids[id]) then return "GetId must be unique: " .. id end
 		ids[id] = true
 	end
 
+	return true
 end

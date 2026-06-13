@@ -38,18 +38,22 @@ for _, testScript: Instance in testScripts do
         table.insert(skippedTrace, `[{testScript.Name}] Skipped`)
         continue
     end
-    local success, err = xpcall(function()
+    local success, message = xpcall(function(): boolean | string
         local testFunction = require(testScript)
-        testFunction()
+        return testFunction()
     end, function(errMessage)
         return tostring(errMessage) .. "\n" .. debug.traceback(nil, 2)
     end)
 
     if success then
-        print(`[{testScript.Name}] Passed`)
+        if message == true then
+            print(`[{testScript.Name}] Passed`)
+        else
+            warn(`[{testScript.Name}] Failed, exit message {message}`)
+        end
     else
-        warn(`[{testScript.Name}] Failed`)
-        warn(err)
+        warn(`[{testScript.Name}] Crashed`)
+        warn(message)
     end
 end
 

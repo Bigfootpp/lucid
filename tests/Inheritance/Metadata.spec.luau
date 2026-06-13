@@ -12,14 +12,14 @@ return function()
 	local g2 = G2:create()
 	local g3 = G3:create()
 
-	assert(#g1:GetParentIds() == 0, "G1 should have 0 parents")
-	assert(#g2:GetParentIds() == 1, "G2 should have 1 parent")
-	assert(#g3:GetParentIds() == 2, "G3 should have 2 parents")
+	if not (#g1:GetParentIds() == 0) then return "G1 should have 0 parents" end
+	if not (#g2:GetParentIds() == 1) then return "G2 should have 1 parent" end
+	if not (#g3:GetParentIds() == 2) then return "G3 should have 2 parents" end
 
 	local allIds = {}
 	for _, id in ipairs(g3:GetParentIds()) do
-		assert(type(id) == "string", "Parent ID must be string")
-		assert(not allIds[id], "Parent IDs must be unique")
+		if not (type(id) == "string") then return "Parent ID must be string" end
+		if not (not allIds[id]) then return "Parent IDs must be unique" end
 		allIds[id] = true
 	end
 
@@ -31,11 +31,12 @@ return function()
 	local L5 = class(L4) { l5 = 5 } {}
 
 	local l5 = L5:create()
-	assert(l5.l1 == 1, "L1 var")
-	assert(l5.l2 == 2, "L2 var")
-	assert(l5.l3 == 3, "L3 var")
-	assert(l5.l4 == 4, "L4 var")
-	assert(l5.l5 == 5, "L5 var")
-	assert(#l5:GetParentIds() == 4, "5 levels = 4 parents")
+	if not (l5.l1 == 1) then return "L1 var" end
+	if not (l5.l2 == 2) then return "L2 var" end
+	if not (l5.l3 == 3) then return "L3 var" end
+	if not (l5.l4 == 4) then return "L4 var" end
+	if not (l5.l5 == 5) then return "L5 var" end
+	if not (#l5:GetParentIds() == 4) then return "5 levels = 4 parents" end
 
+	return true
 end

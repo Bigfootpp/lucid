@@ -14,6 +14,7 @@ return function()
 
 	local orphan = Orphan:create()
 	local success = orphan:trySuper()
-	assert(not success, "super() on class without parent should error")
+	if not (not success) then return "super() on class without parent should error" end
 
+	return true
 end

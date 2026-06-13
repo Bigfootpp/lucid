@@ -23,7 +23,7 @@ return function()
 	}
 
 	local cs = ChildSuper:create()
-	assert(cs:getX() == 201, "super chain failed, expected 201, got " .. tostring(cs:getX())) -- 100 * 2 + 1 = 201
+	if not (cs:getX() == 201) then return "super chain failed, expected 201, got " .. tostring(cs:getX()) end
 
 
 	local A = class() {} {
@@ -45,6 +45,7 @@ return function()
 	}
 
 	local cObj = C:create()
-	assert(cObj:foo() == "ABC", "super parent calling own super failed, expected ABC, got " .. tostring(cObj:foo()))
+	if not (cObj:foo() == "ABC") then return "super parent calling own super failed, expected ABC, got " .. tostring(cObj:foo()) end
 
+	return true
 end
