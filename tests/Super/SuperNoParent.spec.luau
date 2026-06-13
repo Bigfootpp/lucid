@@ -7,7 +7,7 @@ return function(): boolean | string
 	local Orphan = class() {} {
 		trySuper = function(self)
 			return pcall(function()
-				local s = self:super()
+				local _ = self:super()
 			end)
 		end,
 	}

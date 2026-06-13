@@ -10,11 +10,11 @@ return function(): boolean | string
 	}
 
 	local simpleObj = Simple:create()
-	local ok, err: string? = pcall(function(): string?
+	local ok, err = pcall(function()
 		return simpleObj:super()
 	end)
 	if ok then return "super() outside of method should error" end
-	if not (string.find(err, "outside")) then return "Error message should mention 'outside' or 'super'" end
+	if not (string.find(err :: any, "outside")) then return "Error message should mention 'outside' or 'super'" end
 
 	return true
 end
