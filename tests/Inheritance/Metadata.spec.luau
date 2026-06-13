@@ -2,7 +2,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local class = require(ReplicatedStorage.Packages.LuCid)
 
-return function()
+return function(): boolean | string
 
 	local G1 = class() { g1 = true } {}
 	local G2 = class(G1) { g2 = true } {}

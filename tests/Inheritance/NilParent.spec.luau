@@ -2,7 +2,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local class = require(ReplicatedStorage.Packages.LuCid)
 
-return function()
+return function(): boolean | string
 
 	local NoParent = class() { x = 1 } {}
 	local WithNilParent = class(nil) { y = 2 } {}

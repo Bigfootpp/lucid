@@ -2,7 +2,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local class = require(ReplicatedStorage.Packages.LuCid)
 
-return function()
+return function(): boolean | string
 	local Human = class() { name = "", age = 0 } {
 		__init = function(self, name: string, age: number)
 			self.name = name
