@@ -43,13 +43,11 @@ end
 export type ObjectType<P> = {
     _id: string,
     _parentIds: {[number]: string},
-    super: (self: any) -> GetMethods<P>, -- temporarily any
     GetId: (self: any) -> string,
     GetParentIds: (self: any) -> {[number]: string}
 }
 
-export type InterObjectClass<V, M, P> = setmetatable<TypeUtils.Merge<V, ObjectType<P>>, { __index: M }>
-export type FlatInterObjectClass<V, M, P> = TypeUtils.Merge<TypeUtils.Merge<V, M>, ObjectType<P>>
+export type InterObjectClass<V, M, P> = TypeUtils.Unseal<setmetatable<TypeUtils.Merge<V, ObjectType<P>>, { __index: M }>>
 
 export type ClassObject<V, M, P> = {
     _id: string,
@@ -66,10 +64,16 @@ export type InstantiatedObject<V, M, P> = InterObjectClass<
     P
 >
 
-export type SelfReference<V, P> = FlatInterObjectClass<
-    TypeUtils.Merge<TypeUtils.DeepUnseal<V>, GetVariables<P>>, 
-    {},
-    P
->
+export type SuperReference<P> = TypeUtils.Unseal<TypeUtils.Merge<
+    GetVariables<P>,
+    GetMethods<P>
+>>
+
+export type SelfReference<V, P> = TypeUtils.Unseal<TypeUtils.Merge<
+    TypeUtils.Merge<TypeUtils.DeepUnseal<V>, GetVariables<P>>,
+    {
+        super: (self: any) -> SuperReference<P>
+    }
+>>
 
 return {}
