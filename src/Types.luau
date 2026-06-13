@@ -44,7 +44,7 @@ export type ObjectType<P> = {
     _id: string,
     _parentIds: {[number]: string},
     _parentClass: P,
-    super: (self: any) -> any,
+    super: (self: any) -> any, -- temporarily any
     GetId: (self: any) -> string,
     GetParentIds: (self: any) -> {[number]: string}
 }
