@@ -95,14 +95,14 @@ local function callInit(self, ...)
     end
 end
 
-function Object.New<C>(Class: C, ...): Types.InterObjectClass<Types.GetVariables<C>, Types.GetMethods<C>, Types.GetParentClass<C>>
+function Object.New<C>(Class: C, ...): Types.InterObjectClass<Types.GetVariables<C>, Types.GetMethods<C>>
     local parentIds: {number} = Class._parentIds
     local id: number = Class._id
     local variables: {} = Class._variables
     local methods: {} = Class._methods
     local parentClass = Class._parentClass
     
-    local self = TableUtils.DeepCopy(variables) :: Types.ObjectType<Types.GetParentClass<C>>
+    local self = TableUtils.DeepCopy(variables) :: Types.ObjectType
     self._parentIds = parentIds
     self._parentClass = parentClass
     self._id = id
