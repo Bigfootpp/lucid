@@ -56,8 +56,8 @@ export type ClassObject<V, M, P> = {
     _parentIds: {[number]: string},
     _parentClass: P?,
     _variables: TypeUtils.DeepUnseal<TypeUtils.Merge<V, GetVariables<P>>>,
-    _methods: M,
-    create: (self: any, ...any) -> InstantiatedObject<V, M, P>
+    _methods: TypeUtils.Clean<M>,
+    create: (self: any, ...any) -> InstantiatedObject<V, TypeUtils.Clean<M>, P>
 }
 
 export type InstantiatedObject<V, M, P> = InterObjectClass<
@@ -65,9 +65,9 @@ export type InstantiatedObject<V, M, P> = InterObjectClass<
     TypeUtils.Merge<M, GetMethods<P>>
 >
 
-export type FlatInstantiatedObject<V, M, P> = FlatInterObjectClass<
+export type SuperReference<V, P> = FlatInterObjectClass<
     TypeUtils.Merge<TypeUtils.DeepUnseal<V>, GetVariables<P>>, 
-    TypeUtils.Merge<M, GetMethods<P>>
+    {}
 >
 
 return {}
