@@ -49,7 +49,7 @@ for _, testScript: Instance in testScripts do
         if message == true then
             print(`[{testScript.Name}] Passed`)
         else
-            warn(`[{testScript.Name}] Failed, exit message {message}`)
+            warn(`[{testScript.Name}] Failed, exit message: {message}`)
         end
     else
         warn(`[{testScript.Name}] Crashed`)
