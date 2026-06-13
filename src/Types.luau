@@ -40,34 +40,36 @@ export type function GetParentClass(C)
     return info:readproperty(types.singleton("_parentClass"))
 end
 
-export type ObjectType = {
+export type ObjectType<P> = {
     _id: string,
     _parentIds: {[number]: string},
-    super: (self: any) -> any, -- temporarily any
+    super: (self: any) -> GetMethods<P>, -- temporarily any
     GetId: (self: any) -> string,
     GetParentIds: (self: any) -> {[number]: string}
 }
 
-export type InterObjectClass<V, M> = setmetatable<TypeUtils.Merge<V, ObjectType>, { __index: M }>
-export type FlatInterObjectClass<V, M> = TypeUtils.Merge<TypeUtils.Merge<V, M>, ObjectType>
+export type InterObjectClass<V, M, P> = setmetatable<TypeUtils.Merge<V, ObjectType<P>>, { __index: M }>
+export type FlatInterObjectClass<V, M, P> = TypeUtils.Merge<TypeUtils.Merge<V, M>, ObjectType<P>>
 
 export type ClassObject<V, M, P> = {
     _id: string,
     _parentIds: {[number]: string},
     _parentClass: P?,
     _variables: TypeUtils.DeepUnseal<TypeUtils.Merge<V, GetVariables<P>>>,
-    _methods: TypeUtils.Clean<M>,
+    _methods: TypeUtils.Merge<GetMethods<P>, TypeUtils.Clean<M>>,
     create: (self: any, ...any) -> InstantiatedObject<V, TypeUtils.Clean<M>, P>
 }
 
 export type InstantiatedObject<V, M, P> = InterObjectClass<
     TypeUtils.Merge<TypeUtils.DeepUnseal<V>, GetVariables<P>>, 
-    TypeUtils.Merge<M, GetMethods<P>>
+    TypeUtils.Merge<M, GetMethods<P>>,
+    P
 >
 
 export type SelfReference<V, P> = FlatInterObjectClass<
     TypeUtils.Merge<TypeUtils.DeepUnseal<V>, GetVariables<P>>, 
-    {}
+    {},
+    P
 >
 
 return {}
