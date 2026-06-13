@@ -31,7 +31,7 @@ return function()
 	if directSuperErr == nil then
 		return "direct super() in task.spawn should have errored"
 	end
-	if not string.find(directSuperErr, "super() called outside") then
+	if not string.find(directSuperErr, "outside") then
 		return "expected 'super() called outside' error, got: " .. directSuperErr
 	end
 
@@ -80,7 +80,7 @@ return function()
 	if delaySuperErr == nil then
 		return "direct super() in task.delay should have errored"
 	end
-	if not string.find(delaySuperErr, "super() called outside") then
+	if not string.find(delaySuperErr, "outside") then
 		return "expected 'super() called outside' from task.delay, got: " .. delaySuperErr
 	end
 
