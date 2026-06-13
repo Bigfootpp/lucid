@@ -65,7 +65,7 @@ export type InstantiatedObject<V, M, P> = InterObjectClass<
     TypeUtils.Merge<M, GetMethods<P>>
 >
 
-export type SuperReference<V, P> = FlatInterObjectClass<
+export type SelfReference<V, P> = FlatInterObjectClass<
     TypeUtils.Merge<TypeUtils.DeepUnseal<V>, GetVariables<P>>, 
     {}
 >
