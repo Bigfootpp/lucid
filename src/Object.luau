@@ -59,7 +59,7 @@ function Object:super()
 
             local method = parentClass._methods[key]
             if type(method) == "table" and rawget(method, "_definedIn") then
-                return bindContext(self, parentClass, method)
+                return bindContext(self, rawget(method, "_definedIn"), method)
             end
 
             local objMethod = Object[key]
@@ -71,7 +71,7 @@ function Object:super()
 
             return nil
         end,
-        
+
         __newindex = function(_, key, value)
             rawset(self, key, value)
         end
