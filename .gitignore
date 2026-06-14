@@ -11,3 +11,5 @@ sourcemap.json
 bin/
 obj/
 temp/
+
+test.config.luau

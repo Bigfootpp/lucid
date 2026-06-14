@@ -1,6 +1,6 @@
 [package]
 name = "bigfootpp/lucid"
-version = "0.3.0"
+version = "0.4.0"
 registry = "https://github.com/UpliftGames/wally-index"
 license = "MIT"
 authors = ["Bigfoot"]
@@ -19,6 +19,5 @@ include = [
 ]
 
 [dependencies]
-TableUtil = "sleitnick/table-util@1.2.1"
 
 [dev-dependencies]

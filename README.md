@@ -10,80 +10,74 @@ LuCid is a **lightweight** Luau package designed to simplify Object-Oriented Pro
 ### Wally
 
 ```toml
-LuCid = "bigfootpp/lucid@0.3.0"
+LuCid = "bigfootpp/lucid@0.4.0"
 ```
 
 ## Quick Start
 
 ```lua
-local LuCid = require(path.to.lucid)
+local class = require(path.to.lucid)
 
-local Character = LuCid {
-    Health = 100,
-    Name = "Unknown",
-} {
+local Character = class() { Health = 100 } {
     __init = function(self, name: string)
         self.Name = name
     end,
 
     TakeDamage = function(self, amount: number)
         self.Health = math.max(0, self.Health - amount)
-        print(self.Name .. " now has " .. self.Health .. " health.")
     end
 }
 
 local hero = Character:create("Explorer")
-hero:TakeDamage(25) -- Explorer now has 75 health.
+hero:TakeDamage(25)
 ```
 
 ## Inheritance
 
-Pass a parent class as first argument to `LuCid()`:
-
 ```lua
-local Animal = LuCid {
-    species = "",
-    legs = 0,
-} {
-    __init = function(self, species: string, legs: number)
-        self.species = species
-        self.legs = legs
-    end,
+local Animal = class() { species = "" } {
     speak = function(self)
         return ("The %s makes a sound"):format(self.species)
     end,
 }
 
-local Cat = LuCid(Animal) { -- inherits from Animal
-    tail = true,
-} {
-    __init = function(self, species: string, legs: number, tail: boolean)
-        self.species = species
-        self.legs = legs
-        self.tail = tail
-    end,
-    speak = function(self) -- override
+local Cat = class(Animal) { tail = true } {
+    speak = function(self)
         return ("The %s meows"):format(self.species)
     end,
 }
-
-local cat = Cat:create("Felis catus", 4, true)
-print(cat:speak()) -- "The Felis catus meows"
-print(cat:GetParentIds()) -- { "animal_class_id" }
 ```
 
-### Multi-level
+## super()
+
+Call a parent method from a child override:
 
 ```lua
-local LivingBeing = LuCid { alive = true } {}
-local Mammal = LuCid(LivingBeing) { warmBlooded = true } {}
-local Dog = LuCid(Mammal) { breed = "" } {}
+local Base = class() { health = 100 } {
+    getHealth = function(self)
+        return self.health
+    end,
+}
 
-local dog = Dog:create()
-print(dog.alive)       -- true (LivingBeing)
-print(dog.warmBlooded) -- true (Mammal)
-print(#dog:GetParentIds()) -- 2
+local Tank = class(Base) { armor = 50 } {
+    getHealth = function(self)
+        return self:super():getHealth() + self.armor
+    end,
+}
 ```
+
+Chained `super()` calls work across multiple levels:
+
+```lua
+-- A -> B -> C
+-- C:foo() calls super() -> B:foo() calls super() -> A:foo()
+```
+
+### Limitations
+
+- `super()` must be called **inside a class method**. Calling it directly in a `task.spawn` or `task.delay` callback will error.
+- A class method using `super()` **can** be called from `task.spawn` -- only bare `super()` calls outside of method dispatch are invalid.
+- `obj.method == obj.method` is `false` -- each access returns a new wrapper. Use the connection object from `:Connect()` to disconnect events, not the function reference.
 
 ## API
 
@@ -92,6 +86,7 @@ print(#dog:GetParentIds()) -- 2
 | `Class:create(...)` | Create instance, calls `__init` if defined. |
 | `instance:GetId()` | Unique instance ID. |
 | `instance:GetParentIds()` | Array of parent class IDs. |
+| `instance:super():method()` | Call parent method from override. |
 
 ## License
 

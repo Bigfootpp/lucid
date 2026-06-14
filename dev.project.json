@@ -8,7 +8,7 @@
         "$path": "tests"
       },
       "Packages": {
-        "$path": "Packages",
+        "$className": "Folder",
         "LuCid": {
           "$path": "src"
         }
