@@ -70,6 +70,10 @@ function Object:super()
             end
 
             return nil
+        end,
+        
+        __newindex = function(_, key, value)
+            rawset(self, key, value)
         end
     })
 end
