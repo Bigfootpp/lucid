@@ -40,14 +40,14 @@ export type function GetParentClass(C)
     return info:readproperty(types.singleton("_parentClass"))
 end
 
-export type ObjectType<P> = {
+export type ObjectType = {
     _id: string,
     _parentIds: {[number]: string},
     GetId: (self: any) -> string,
     GetParentIds: (self: any) -> {[number]: string}
 }
 
-export type InterObjectClass<V, M, P> = TypeUtils.Unseal<setmetatable<TypeUtils.Merge<V, ObjectType<P>>, { __index: M }>>
+export type InterObjectClass<V, M> = TypeUtils.Unseal<setmetatable<TypeUtils.Merge<V, ObjectType>, { __index: M }>>
 
 export type ClassObject<V, M, P> = {
     _id: string,
@@ -60,8 +60,7 @@ export type ClassObject<V, M, P> = {
 
 export type InstantiatedObject<V, M, P> = InterObjectClass<
     TypeUtils.Merge<TypeUtils.DeepUnseal<V>, GetVariables<P>>, 
-    TypeUtils.Merge<M, GetMethods<P>>,
-    P
+    TypeUtils.Merge<M, GetMethods<P>>
 >
 
 export type SuperReference<P> = TypeUtils.Unseal<TypeUtils.Merge<
