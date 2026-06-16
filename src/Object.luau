@@ -32,14 +32,6 @@ local function bindContext(self, ctx, method)
     end
 end
 
-function Object:GetId(): string
-    return self._id
-end
-
-function Object:GetParentIds(): {[number]: string}
-    return self._parentIds
-end
-
 function Object:super()
     if not getContext() then
         error("super() called outside of class method")
@@ -97,6 +89,14 @@ local function callInit(self, ...)
     if self["__init"] then
         self["__init"](self, ...) 
     end
+end
+
+function Object.getId(self: Types.ObjectType): string
+    return self._id
+end
+
+function Object.getParentIds(self: Types.ObjectType): {[number]: string}
+    return self._parentIds
 end
 
 function Object.isA(self: Types.ObjectType, class: Types.ClassObject<{}, {}, {}>): boolean

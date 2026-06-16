@@ -45,7 +45,7 @@ return function(): boolean | string
 	if not (#moto:GetParentIds() == 1) then return "Moto has 1 parent" end
 	if not (car:GetParentIds()[1] == moto:GetParentIds()[1]) then return "Same parent Vehicle ID" end
 
-	if not (car:GetId() ~= moto:GetId()) then return "Different instance IDs" end
+	if not (car:() ~= moto:GetId()) then return "Different instance IDs" end
 
 	return true
 end
