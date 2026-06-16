@@ -10,6 +10,20 @@ local Object = require(script.Parent.Object)
 local Class = {}
 Class.__index = Class
 
+function Class.isA(self: Types.ClassObject<{}, {}, {}>, class: Types.ClassObject<{}, {}, {}>): boolean
+    if class._id == self._id then return true end
+    if table.find(class._id, self._parentIds) then return true end
+    return false
+end
+
+function Class.getId(self: Types.ClassObject<{}, {}, {}>)
+    return self._id
+end
+
+function Class.getParentIds(self: Types.ClassObject<{}, {}, {}>)
+    return table.clone(self._parentIds)
+end
+
 function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): Types.ClassObject<V, M, P>
     counter = counter + 1
     local self = setmetatable({}, Class) :: Types.ClassObject<V, M, P>
