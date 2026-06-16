@@ -16,11 +16,11 @@ function Class.isA(self: Types.ClassObject<{}, {}, {}>, class: Types.ClassObject
     return false
 end
 
-function Class.getId(self: Types.ClassObject<{}, {}, {}>)
+function Class.getId(self: Types.ClassObject<{}, {}, {}>): string
     return self._id
 end
 
-function Class.getParentIds(self: Types.ClassObject<{}, {}, {}>)
+function Class.getParentIds(self: Types.ClassObject<{}, {}, {}>): {[number]: string}
     return table.clone(self._parentIds)
 end
 
