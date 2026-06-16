@@ -105,6 +105,10 @@ function Object.isA(self: Types.ObjectType, class: Types.ClassObject<{}, {}, {}>
     return false
 end
 
+function Object.getClass(self: Types.ObjectType): {}
+    return self._class
+end
+
 function Object.New<C>(Class: C, ...): Types.InterObjectClass<Types.GetVariables<C>, Types.GetMethods<C>>
     local parentIds: {number} = Class._parentIds
     local id: number = Class._id
@@ -116,6 +120,7 @@ function Object.New<C>(Class: C, ...): Types.InterObjectClass<Types.GetVariables
     self._parentIds = parentIds
     self._parentClass = parentClass
     self._id = id
+    self._class = Class
 
     defineMetatable(self, methods)
     callInit(self, ...)

@@ -43,6 +43,7 @@ end
 export type ObjectType = {
     _id: string,
     _parentIds: {[number]: string},
+    _class: {},
     GetId: (self: any) -> string,
     GetParentIds: (self: any) -> {[number]: string}
 }
