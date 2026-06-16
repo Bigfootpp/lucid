@@ -99,6 +99,12 @@ local function callInit(self, ...)
     end
 end
 
+function Object.isA(self: Types.ObjectType, class: Types.ClassObject<{}, {}, {}>): boolean
+    if class._id == self._id then return true end
+    if table.find(class._id, self._parentIds) then return true end
+    return false
+end
+
 function Object.New<C>(Class: C, ...): Types.InterObjectClass<Types.GetVariables<C>, Types.GetMethods<C>>
     local parentIds: {number} = Class._parentIds
     local id: number = Class._id
