@@ -32,6 +32,27 @@ local function bindContext(self, ctx, method)
     end
 end
 
+local function defineMetatable(self, methods)
+    setmetatable(methods, Object)
+    setmetatable(self, {
+        __index = function(_, key)
+            local method = methods[key]
+
+            if type(method) == "table" and rawget(method, "_definedIn") then
+                return bindContext(self, rawget(method, "_definedIn"), method)
+            end
+
+            return method
+        end
+    })
+end
+
+local function callInit(self, ...)
+    if self["__init"] then
+        self["__init"](self, ...) 
+    end
+end
+
 function Object:super()
     if not getContext() then
         error("super() called outside of class method")
@@ -68,27 +89,6 @@ function Object:super()
             rawset(self, key, value)
         end
     })
-end
-
-local function defineMetatable(self, methods)
-    setmetatable(methods, Object)
-    setmetatable(self, {
-        __index = function(_, key)
-            local method = methods[key]
-
-            if type(method) == "table" and rawget(method, "_definedIn") then
-                return bindContext(self, rawget(method, "_definedIn"), method)
-            end
-
-            return method
-        end
-    })
-end
-
-local function callInit(self, ...)
-    if self["__init"] then
-        self["__init"](self, ...) 
-    end
 end
 
 function Object.getId(self: Types.ObjectType): string
