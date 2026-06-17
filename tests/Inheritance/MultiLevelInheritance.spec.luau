@@ -41,7 +41,7 @@ return function(): boolean | string
 	if not (dog:breathe() == "mammal breathing") then return "Method override chain failed (should use Mammal)" end
 	if not (dog:bark() == "Labrador barks") then return "Own method failed" end
 
-	local dogParentIds = dog:GetParentIds()
+	local dogParentIds = dog:getParentIds()
 	if not (#dogParentIds == 2) then return "Expected two parent ids, got " .. #dogParentIds end
 	if not (dogParentIds[1] ~= dogParentIds[2]) then return "Parent IDs should be unique" end
 

@@ -8,9 +8,9 @@ return function(): boolean | string
 	for i = 1, 10 do
 		local T = class() { idx = i } {}
 		local obj = T:create()
-		local id = obj:GetId()
-		if not (type(id) == "string") then return "GetId returns string" end
-		if not (not ids[id]) then return "GetId must be unique: " .. id end
+		local id = obj:getId()
+		if not (type(id) == "string") then return "getId returns string" end
+		if not (not ids[id]) then return "getId must be unique: " .. id end
 		ids[id] = true
 	end
 
