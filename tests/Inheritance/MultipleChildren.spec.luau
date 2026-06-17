@@ -41,11 +41,11 @@ return function(): boolean | string
 	if not (moto.hasSidecar == true) then return "Moto sidecar" end
 	if not (moto:drive() == "Driving at 150 km/h") then return "Moto drive" end
 
-	if not (#car:GetParentIds() == 1) then return "Car has 1 parent" end
-	if not (#moto:GetParentIds() == 1) then return "Moto has 1 parent" end
-	if not (car:GetParentIds()[1] == moto:GetParentIds()[1]) then return "Same parent Vehicle ID" end
+	if not (#car:getParentIds() == 1) then return "Car has 1 parent" end
+	if not (#moto:getParentIds() == 1) then return "Moto has 1 parent" end
+	if not (car:getParentIds()[1] == moto:getParentIds()[1]) then return "Same parent Vehicle ID" end
 
-	if not (car:GetId() ~= moto:GetId()) then return "Different instance IDs" end
+	if not (car:getId() ~= moto:getId()) then return "Different instance IDs" end
 
 	return true
 end

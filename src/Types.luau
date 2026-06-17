@@ -43,8 +43,11 @@ end
 export type ObjectType = {
     _id: string,
     _parentIds: {[number]: string},
-    GetId: (self: any) -> string,
-    GetParentIds: (self: any) -> {[number]: string}
+    _class: {},
+    getId: (self: any) -> string,
+    getParentIds: (self: any) -> {[number]: string},
+    getClass: (self: any) -> {},
+    isA: (self: any, class: any) -> boolean,
 }
 
 export type InterObjectClass<V, M> = TypeUtils.Unseal<setmetatable<TypeUtils.Merge<V, ObjectType>, { __index: M }>>
@@ -55,7 +58,10 @@ export type ClassObject<V, M, P> = {
     _parentClass: P?,
     _variables: TypeUtils.DeepUnseal<TypeUtils.Merge<V, GetVariables<P>>>,
     _methods: TypeUtils.Merge<GetMethods<P>, TypeUtils.Clean<M>>,
-    create: (self: any, ...any) -> InstantiatedObject<V, TypeUtils.Clean<M>, P>
+    create: (self: any, ...any) -> InstantiatedObject<V, TypeUtils.Clean<M>, P>,
+    isA: (self: any, class: any) -> boolean,
+    getId: (self: any) -> string,
+    getParentIds: (self: any) -> {[number]: string}
 }
 
 export type InstantiatedObject<V, M, P> = InterObjectClass<

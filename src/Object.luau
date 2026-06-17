@@ -32,12 +32,25 @@ local function bindContext(self, ctx, method)
     end
 end
 
-function Object:GetId(): string
-    return self._id
+local function defineMetatable(self, methods)
+    setmetatable(methods, Object)
+    setmetatable(self, {
+        __index = function(_, key)
+            local method = methods[key]
+
+            if type(method) == "table" and rawget(method, "_definedIn") then
+                return bindContext(self, rawget(method, "_definedIn"), method)
+            end
+
+            return method
+        end
+    })
 end
 
-function Object:GetParentIds(): {[number]: string}
-    return self._parentIds
+local function callInit(self, ...)
+    if self["__init"] then
+        self["__init"](self, ...) 
+    end
 end
 
 function Object:super()
@@ -78,25 +91,22 @@ function Object:super()
     })
 end
 
-local function defineMetatable(self, methods)
-    setmetatable(methods, Object)
-    setmetatable(self, {
-        __index = function(_, key)
-            local method = methods[key]
-
-            if type(method) == "table" and rawget(method, "_definedIn") then
-                return bindContext(self, rawget(method, "_definedIn"), method)
-            end
-
-            return method
-        end
-    })
+function Object.getId(self: Types.ObjectType): string
+    return self._id
 end
 
-local function callInit(self, ...)
-    if self["__init"] then
-        self["__init"](self, ...) 
-    end
+function Object.getParentIds(self: Types.ObjectType): {[number]: string}
+    return self._parentIds
+end
+
+function Object.isA(self: Types.ObjectType, class: Types.ClassObject<{}, {}, {}>): boolean
+    if class._id == self._id then return true end
+    if table.find(class._id, self._parentIds) then return true end
+    return false
+end
+
+function Object.getClass(self: Types.ObjectType): {}
+    return self._class
 end
 
 function Object.New<C>(Class: C, ...): Types.InterObjectClass<Types.GetVariables<C>, Types.GetMethods<C>>
@@ -110,6 +120,7 @@ function Object.New<C>(Class: C, ...): Types.InterObjectClass<Types.GetVariables
     self._parentIds = parentIds
     self._parentClass = parentClass
     self._id = id
+    self._class = Class
 
     defineMetatable(self, methods)
     callInit(self, ...)

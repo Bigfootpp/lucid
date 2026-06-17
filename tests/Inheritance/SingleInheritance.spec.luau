@@ -31,8 +31,8 @@ return function(): boolean | string
 	if not (cat.tail == true) then return "Own variable 'tail' failed" end
 	if not (cat:speak() == "The Felis catus meows") then return "Method override failed" end
 
-	local parentIds = cat:GetParentIds()
-	if not (type(parentIds) == "table") then return "GetParentIds must return a table" end
+	local parentIds = cat:getParentIds()
+	if not (type(parentIds) == "table") then return "getParentIds must return a table" end
 	if not (#parentIds == 1) then return "Expected exactly one parent id" end
 
 	return true

@@ -10,7 +10,7 @@ LuCid is a **lightweight** Luau package designed to simplify Object-Oriented Pro
 ### Wally
 
 ```toml
-LuCid = "bigfootpp/lucid@0.4.0"
+LuCid = "bigfootpp/lucid@0.5.0"
 ```
 
 ## Quick Start
@@ -77,16 +77,7 @@ Chained `super()` calls work across multiple levels:
 
 - `super()` must be called **inside a class method**. Calling it directly in a `task.spawn` or `task.delay` callback will error.
 - A class method using `super()` **can** be called from `task.spawn` -- only bare `super()` calls outside of method dispatch are invalid.
-- `obj.method == obj.method` is `false` -- each access returns a new wrapper. Use the connection object from `:Connect()` to disconnect events, not the function reference.
-
-## API
-
-| Method | Description |
-|--------|-------------|
-| `Class:create(...)` | Create instance, calls `__init` if defined. |
-| `instance:GetId()` | Unique instance ID. |
-| `instance:GetParentIds()` | Array of parent class IDs. |
-| `instance:super():method()` | Call parent method from override. |
+- `obj.method == obj.method` is `false` -- each access returns a new wrapper.
 
 ## License
 

@@ -12,12 +12,12 @@ return function(): boolean | string
 	local g2 = G2:create()
 	local g3 = G3:create()
 
-	if not (#g1:GetParentIds() == 0) then return "G1 should have 0 parents" end
-	if not (#g2:GetParentIds() == 1) then return "G2 should have 1 parent" end
-	if not (#g3:GetParentIds() == 2) then return "G3 should have 2 parents" end
+	if not (#g1:getParentIds() == 0) then return "G1 should have 0 parents" end
+	if not (#g2:getParentIds() == 1) then return "G2 should have 1 parent" end
+	if not (#g3:getParentIds() == 2) then return "G3 should have 2 parents" end
 
 	local allIds = {}
-	for _, id in ipairs(g3:GetParentIds()) do
+	for _, id in ipairs(g3:getParentIds()) do
 		if not (type(id) == "string") then return "Parent ID must be string" end
 		if not (not allIds[id]) then return "Parent IDs must be unique" end
 		allIds[id] = true
@@ -36,7 +36,7 @@ return function(): boolean | string
 	if not (l5.l3 == 3) then return "L3 var" end
 	if not (l5.l4 == 4) then return "L4 var" end
 	if not (l5.l5 == 5) then return "L5 var" end
-	if not (#l5:GetParentIds() == 4) then return "5 levels = 4 parents" end
+	if not (#l5:getParentIds() == 4) then return "5 levels = 4 parents" end
 
 	return true
 end

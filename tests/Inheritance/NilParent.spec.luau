@@ -12,7 +12,7 @@ return function(): boolean | string
 
 	if not (np.x == 1) then return "No parent works" end
 	if not (wnp.y == 2) then return "Nil parent works" end
-	if not (#np:GetParentIds() == 0) then return "No parent -> 0 IDs" end
-	if not (#wnp:GetParentIds() == 0) then return "Nil parent -> 0 IDs" end
+	if not (#np:getParentIds() == 0) then return "No parent -> 0 IDs" end
+	if not (#wnp:getParentIds() == 0) then return "Nil parent -> 0 IDs" end
 	return true
 end
