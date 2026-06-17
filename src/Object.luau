@@ -101,7 +101,7 @@ end
 
 function Object.isA(self: Types.ObjectType, class: Types.ClassObject<{}, {}, {}>): boolean
     if class._id == self._id then return true end
-    if table.find(class._id, self._parentIds) then return true end
+    if table.find(self._parentIds, class._id) then return true end
     return false
 end
 
