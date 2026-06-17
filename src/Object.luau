@@ -1,5 +1,6 @@
 local TableUtils = require(script.Parent.Utils.Table)
 local Types = require(script.Parent.Types)
+local Metamethods = require(script.Parent.Metamethods)
 
 local Object = {}
 Object.__index = Object
@@ -34,7 +35,7 @@ end
 
 local function defineMetatable(self, methods)
     setmetatable(methods, Object)
-    setmetatable(self, {
+    setmetatable(self, Metamethods.OverrideNativeMetamethods(self, methods, {
         __index = function(_, key)
             local method = methods[key]
 
@@ -44,7 +45,8 @@ local function defineMetatable(self, methods)
 
             return method
         end
-    })
+    }))
+    Metamethods.PreventNativeMetamethods(self, 3)
 end
 
 local function callInit(self, ...)
