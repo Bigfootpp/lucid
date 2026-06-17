@@ -12,7 +12,7 @@ Class.__index = Class
 
 function Class.isA(self: Types.ClassObject<{}, {}, {}>, class: Types.ClassObject<{}, {}, {}>): boolean
     if class._id == self._id then return true end
-    if table.find(class._id, self._parentIds) then return true end
+    if table.find(self._parentIds, class._id) then return true end
     return false
 end
 
