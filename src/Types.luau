@@ -81,4 +81,8 @@ export type SelfReference<V, P> = TypeUtils.Unseal<TypeUtils.Merge<
     }
 >>
 
+export type MethodsTable<V, P> = {
+    [string]: (self: SelfReference<V, P>, ...any) -> ...any
+}
+
 return {}
