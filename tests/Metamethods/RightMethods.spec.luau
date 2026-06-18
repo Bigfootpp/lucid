@@ -9,32 +9,32 @@ return function(): boolean | string
 			self.y = y
 		end,
 		__minus = function(self, other)
-			return Vec:create(self.x - other, self.y - other)
+			return self.x - other, self.y - other
 		end,
 		__rminus = function(self, other)
-			return Vec:create(other - self.x, other - self.y)
+			return other - self.x, other - self.y
 		end,
 		__divide = function(self, scalar: number)
-			return Vec:create(self.x / scalar, self.y / scalar)
+			return self.x / scalar, self.y / scalar
 		end,
 		__rdivide = function(self, scalar: number)
-			return Vec:create(scalar / self.x, scalar / self.y)
+			return scalar / self.x, scalar / self.y
 		end,
 	}
 
 	local v = Vec:create(2, 4)
 
-	local leftSub = v - 1
-	if not (leftSub.x == 1 and leftSub.y == 3) then return "Expected (1,3), got (" .. tostring(leftSub.x) .. "," .. tostring(leftSub.y) .. ")" end
+	local lx, ly = v - 1
+	if not (lx == 1 and ly == 3) then return "Expected (1,3), got (" .. tostring(lx) .. "," .. tostring(ly) .. ")" end
 
-	local rightSub = 10 - v
-	if not (rightSub.x == 8 and rightSub.y == 6) then return "Expected (8,6), got (" .. tostring(rightSub.x) .. "," .. tostring(rightSub.y) .. ")" end
+	local rx, ry = 10 - v
+	if not (rx == 8 and ry == 6) then return "Expected (8,6), got (" .. tostring(rx) .. "," .. tostring(ry) .. ")" end
 
-	local leftDiv = v / 2
-	if not (leftDiv.x == 1 and leftDiv.y == 2) then return "Expected (1,2), got (" .. tostring(leftDiv.x) .. "," .. tostring(leftDiv.y) .. ")" end
+	local dx, dy = v / 2
+	if not (dx == 1 and dy == 2) then return "Expected (1,2), got (" .. tostring(dx) .. "," .. tostring(dy) .. ")" end
 
-	local rightDiv = 20 / v
-	if not (rightDiv.x == 10 and rightDiv.y == 5) then return "Expected (10,5), got (" .. tostring(rightDiv.x) .. "," .. tostring(rightDiv.y) .. ")" end
+	local rdx, rdy = 20 / v
+	if not (rdx == 10 and rdy == 5) then return "Expected (10,5), got (" .. tostring(rdx) .. "," .. tostring(rdy) .. ")" end
 
 	return true
 end

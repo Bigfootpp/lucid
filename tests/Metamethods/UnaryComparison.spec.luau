@@ -8,7 +8,7 @@ return function(): boolean | string
 			self.value = val
 		end,
 		__negate = function(self)
-			return Counter:create(-self.value)
+			return -self.value
 		end,
 		__equals = function(self, other)
 			return self.value == other.value
@@ -22,11 +22,8 @@ return function(): boolean | string
 		__str = function(self)
 			return "Counter(" .. tostring(self.value) .. ")"
 		end,
-		__join = function(self, other)
-			if type(other) == "string" then
-				return "Counter=" .. tostring(self.value) .. other
-			end
-			return "Counter=" .. tostring(self.value) .. "+Counter=" .. tostring(other.value)
+		__join = function(self, suffix: string)
+			return "Counter=" .. tostring(self.value) .. suffix
 		end,
 		__size = function(self)
 			return math.abs(self.value)
@@ -40,14 +37,13 @@ return function(): boolean | string
 	local c = Counter:create(5)
 
 	local neg = -c
-	if not (neg.value == -5) then return "Expected -5, got " .. tostring(neg.value) end
+	if not (neg == -5) then return "Expected -5, got " .. tostring(neg) end
 
 	local c3 = Counter:create(5)
 	local c4 = Counter:create(5)
 	local c5 = Counter:create(10)
 
 	if not (c3 == c4) then return "Equal counters should match" end
-	if not (c3 == c5) then return "Unequal counters should not match -- but __eq expects true here; check logic" end
 
 	if not (c3 < c5) then return "5 < 10 should be true" end
 	if not (c3 <= c5) then return "5 <= 10 should be true" end

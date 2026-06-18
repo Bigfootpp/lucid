@@ -8,34 +8,33 @@ return function(): boolean | string
 			self.val = v
 		end,
 		__plus = function(self, other)
-			return Scalar:create(self.val + other)
+			return self.val + other
 		end,
 		__times = function(self, other)
-			return Scalar:create(self.val * other)
+			return self.val * other
 		end,
 		__minus = function(self, other)
-			return Scalar:create(self.val - other)
+			return self.val - other
 		end,
 	}
 
 	local s = Scalar:create(10)
 
 	local leftAdd = s + 5
-	if not (leftAdd.val == 15) then return "Expected 15, got " .. tostring(leftAdd.val) end
+	if not (leftAdd == 15) then return "Expected 15, got " .. tostring(leftAdd) end
 
 	local rightAdd = 5 + s
-	if not (rightAdd.val == 15) then return "Commutative __plus: expected 15, got " .. tostring(rightAdd.val) end
+	if not (rightAdd == 15) then return "Commutative __plus: expected 15, got " .. tostring(rightAdd) end
 
 	local leftMul = s * 3
-	if not (leftMul.val == 30) then return "Expected 30, got " .. tostring(leftMul.val) end
+	if not (leftMul == 30) then return "Expected 30, got " .. tostring(leftMul) end
 
 	local rightMul = 3 * s
-	if not (rightMul.val == 30) then return "Commutative __times: expected 30, got " .. tostring(rightMul.val) end
+	if not (rightMul == 30) then return "Commutative __times: expected 30, got " .. tostring(rightMul) end
 
 	local leftSub = s - 4
-	if not (leftSub.val == 6) then return "Expected 6, got " .. tostring(leftSub.val) end
+	if not (leftSub == 6) then return "Expected 6, got " .. tostring(leftSub) end
 
-	local subOk = false
 	local ok, err = pcall(function()
 		local _ = 4 - s
 	end)

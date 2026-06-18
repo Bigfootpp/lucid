@@ -3,9 +3,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local class = require(ReplicatedStorage.Packages.LuCid)
 
 return function(): boolean | string
-	local ok, err: any = pcall(function()
-		local _BadClass = class() { value = 0 } {
-			__add = function(self, other: number)
+	local ok, err = pcall(function()
+		local _ = class() { value = 0 } {
+			__add = function(self, other)
 				return self.value + other
 			end,
 		}
@@ -14,14 +14,14 @@ return function(): boolean | string
 	if not (string.find(err, "Cannot override native metamethods")) then return "Error should mention 'Cannot override native metamethods', got: " .. tostring(err) end
 
 	local SafeClass = class() { value = 0 } {
-		__plus = function(self, other: number)
+		__plus = function(self, other)
 			return self.value + other
 		end,
 	}
 	local obj = SafeClass:create()
 	obj.value = 10
-	local obj2 = obj + 5
-	if not (obj2 == 15) then return "Expected 15, got " .. tostring(obj2) end
+	local result = obj + 5
+	if not (result == 15) then return "Expected 15, got " .. tostring(result) end
 
 	return true
 end
