@@ -22,14 +22,17 @@ local function bindContext(self, ctx, method)
         local prev = getContext()
         setContext(ctx)
         
-        local success, result = pcall(method, table.unpack(args, 1, args.n))
-
+        local success, result = pcall(function()
+           return table.pack(method(table.unpack(args, 1, args.n)))
+        end)
+        
         setContext(prev)
 
         if not success then
             error(result)
         end
-        return result
+        
+        return table.unpack(result, 1, result.n)
     end
 end
 
