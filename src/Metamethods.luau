@@ -1,5 +1,4 @@
 local Metamethods = {}
-local TypeUtils = require(script.Parent.Utils.TypeUtils)
 
 local METAMETHODS_MAP = {
     __plus = "__add",
@@ -36,9 +35,7 @@ local COMMUTATIVE_METAMETHODS = {
     __times = true,
 }
 
-export type MetamethodsType = typeof(METAMETHODS_MAP)
-
-function Metamethods.OverrideNativeMetamethods<T>(self, methods: {}, tbl: T): TypeUtils.Merge<T, MetamethodsType>
+function Metamethods.OverrideNativeMetamethods<T>(self, methods: {}, tbl: T)
     for name, nativeName in METAMETHODS_MAP do
         if methods[name] then
             local rightMethodName = RIGHT_OPERATOR_METAMETHODS_MAP[name]
