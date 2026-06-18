@@ -31,12 +31,18 @@ local RIGHT_OPERATOR_METAMETHODS_MAP = {
     __join = "__rjoin",
 }
 
+local COMMUTATIVE_METAMETHODS = {
+    __plus = true,
+    __times = true,
+}
+
 export type MetamethodsType = typeof(METAMETHODS_MAP)
 
 function Metamethods.OverrideNativeMetamethods<T>(self, methods: {}, tbl: T): TypeUtils.Merge<T, MetamethodsType>
     for name, nativeName in METAMETHODS_MAP do
         if methods[name] then
-            if not RIGHT_OPERATOR_METAMETHODS_MAP[name] then
+            local rightMethodName = RIGHT_OPERATOR_METAMETHODS_MAP[name]
+            if not rightMethodName then
                 tbl[nativeName] = function(_, ...)
                     return self[name](self, ...)
                 end
@@ -45,9 +51,15 @@ function Metamethods.OverrideNativeMetamethods<T>(self, methods: {}, tbl: T): Ty
                     if typeof(a) == "table" and a._id == self._id then
                         return self[name](self, b)
                     elseif typeof(b) == "table" and b._id == self._id then
-                        return self[RIGHT_OPERATOR_METAMETHODS_MAP[name]](self, a)
+                        if self[rightMethodName] then
+                            return self[rightMethodName](self, a)
+                        elseif COMMUTATIVE_METAMETHODS[name] then
+                            return self[name](self, a)
+                        else
+                            error(`Non-commutative operation {nativeName} requires you to define the reflected method: {rightMethodName}`, 2)
+                        end
                     else
-                        error(`Both argument are not instance of the class {self._id}`, 2)
+                        error(`Both arguments are not instances of the class {self._id}`, 2)
                     end
                 end
             end
