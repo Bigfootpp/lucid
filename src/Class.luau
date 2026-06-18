@@ -1,6 +1,7 @@
 local HttpService = game:GetService("HttpService")
 local TableUtils = require(script.Parent.Utils.Table)
 local Types = require(script.Parent.Types)
+local Metamethods = require(script.Parent.Metamethods)
 
 local PREFIX = HttpService:GenerateGUID(false)
 local counter = 0
@@ -29,7 +30,9 @@ function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): Types.Cl
     local self = setmetatable({}, Class) :: Types.ClassObject<V, M, P>
     self._variables = parentClass and TableUtils.Update(variables, parentClass._variables, false) or variables
     self._methods = parentClass and TableUtils.Update(methods, parentClass._methods, false) or methods
-    
+
+    Metamethods.PreventNativeMetamethods(self._methods, 2)
+
     for name, func in self._methods do
         if type(func) == "function" then
             self._methods[name] = setmetatable({

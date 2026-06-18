@@ -46,7 +46,6 @@ local function defineMetatable(self, methods)
             return method
         end
     }))
-    Metamethods.PreventNativeMetamethods(self, 4)
 end
 
 local function callInit(self, ...)
