@@ -5,6 +5,9 @@ LuCid is a **lightweight** Luau package designed to simplify Object-Oriented Pro
 > [!WARNING]
 > This project is currently in **Beta**. Expect breaking changes and use with caution.
 
+> [!IMPORTANT]
+> You must enable the new Luau type solver for the types to work correctly.
+
 ## Installation
 
 ### Wally
