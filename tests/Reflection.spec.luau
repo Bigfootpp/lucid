@@ -9,9 +9,9 @@ return function(): boolean | string
 	local Other = class() {} {}
 
 	local baseInst = Base:create()
-	local subInst = Sub:create()
+	local _ = Sub:create()
 	local subSubInst = SubSub:create()
-	local otherInst = Other:create()
+	local _ = Other:create()
 
 	-- 1. Test class-to-class isA reflection
 	if not SubSub:isA(Sub) then return "SubSub:isA(Sub) should be true" end
