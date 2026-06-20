@@ -113,7 +113,7 @@ function Object.getClass(self: Types.ObjectType): {}
     return self._class
 end
 
-function Object.New<C>(Class: C, ...): Types.InterObjectClass<Types.GetVariables<C>, Types.GetMethods<C>>
+function Object.New<C>(Class: C, ...)
     local parentIds: {number} = Class._parentIds
     local id: number = Class._id
     local variables: {} = Class._variables
