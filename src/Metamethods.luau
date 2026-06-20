@@ -35,28 +35,28 @@ local COMMUTATIVE_METAMETHODS = {
     __times = true,
 }
 
-function Metamethods.OverrideNativeMetamethods<T>(self, methods: {}, tbl: T)
+function Metamethods.OverrideNativeMetamethods<T>(id: number, methods: {}, tbl: T)
     for name, nativeName in METAMETHODS_MAP do
         if methods[name] then
             local rightMethodName = RIGHT_OPERATOR_METAMETHODS_MAP[name]
             if not rightMethodName then
-                tbl[nativeName] = function(_, ...)
+                tbl[nativeName] = function(self, ...)
                     return self[name](self, ...)
                 end
             else
                 tbl[nativeName] = function(a, b)
-                    if typeof(a) == "table" and a._id == self._id then
-                        return self[name](self, b)
-                    elseif typeof(b) == "table" and b._id == self._id then
-                        if self[rightMethodName] then
-                            return self[rightMethodName](self, a)
+                    if typeof(a) == "table" and a._id == id then
+                        return a[name](a, b)
+                    elseif typeof(b) == "table" and b._id == id then
+                        if b[rightMethodName] then
+                            return b[rightMethodName](b, a)
                         elseif COMMUTATIVE_METAMETHODS[name] then
-                            return self[name](self, a)
+                            return b[name](b, a)
                         else
                             error(`Non-commutative operation {nativeName} requires you to define the reflected method: {rightMethodName}`, 2)
                         end
                     else
-                        error(`Both arguments are not instances of the class {self._id}`, 2)
+                        error(`Both arguments are not instances of the class {id}`, 2)
                     end
                 end
             end

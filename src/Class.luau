@@ -2,6 +2,7 @@ local HttpService = game:GetService("HttpService")
 local TableUtils = require(script.Parent.Utils.Table)
 local Types = require(script.Parent.Types)
 local Metamethods = require(script.Parent.Metamethods)
+local ContextManager = require(script.Parent.ContextManager)
 
 local PREFIX = HttpService:GenerateGUID(false)
 local counter = 0
@@ -33,6 +34,10 @@ function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): Types.Cl
 
     Metamethods.PreventNativeMetamethods(self._methods, 2)
 
+    self._parentIds = parentClass and TableUtils.Extend({parentClass._id}, parentClass._parentIds) or {}
+    self._parentClass = parentClass
+    self._id = PREFIX .. "_" .. counter
+
     for name, func in self._methods do
         if type(func) == "function" then
             self._methods[name] = setmetatable({
@@ -45,9 +50,18 @@ function Class.New<V, M, P>(variables: V, methods: M, parentClass: P?): Types.Cl
         end
     end
 
-    self._parentIds = parentClass and TableUtils.Extend({parentClass._id}, parentClass._parentIds) or {}
-    self._parentClass = parentClass
-    self._id = PREFIX .. "_" .. counter
+    setmetatable(self._methods, Object)
+    self._metatable = Metamethods.OverrideNativeMetamethods(self._id, self._methods, {
+        __index = function(instance, key)
+            local method = self._methods[key]
+
+            if type(method) == "table" and rawget(method, "_definedIn") then
+                return ContextManager.BindContext(instance, method, rawget(method, "_definedIn"))
+            end
+
+            return method
+        end
+    })
 
     return self :: Types.ClassObject<V, M, P>
 end
