@@ -120,6 +120,8 @@ export type SelfReference<V, P> = TypeUtils.Unseal<TypeUtils.Merge<
 
 export type MethodsTable<V, P> = {
     [string]: (self: SelfReference<V, P>, ...any) -> ...any,
+    __init: (self: SelfReference<V, P>, ...any) -> (),
+
     __plus: (self: SelfReference<V, P>, other: any) -> any,
     __rplus: (self: SelfReference<V, P>, other: any) -> any,
     __minus: (self: SelfReference<V, P>, other: any) -> any,
