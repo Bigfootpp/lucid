@@ -79,7 +79,7 @@ Chained `super()` calls work across multiple levels:
 ### Limitations
 
 - `super()` must be called **inside a class method**. Calling it directly in a `task.spawn` or `task.delay` callback will error.
-- A class method using `super()` **can** be called from `task.spawn` -- only bare `super()` calls outside of method dispatch are invalid.
+- A class method using `super()` **can** be called from `task.spawn`
 - `obj.method == obj.method` is `false` -- each access returns a new wrapper.
 
 ## License
