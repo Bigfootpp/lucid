@@ -13,7 +13,7 @@ LuCid is a **lightweight** Luau package designed to simplify Object-Oriented Pro
 ### Wally
 
 ```toml
-LuCid = "bigfootpp/lucid@0.5.2"
+LuCid = "bigfootpp/lucid@0.6.0"
 ```
 
 ## Quick Start
