@@ -1,6 +1,6 @@
 [package]
 name = "bigfootpp/lucid"
-version = "0.5.2"
+version = "0.6.0"
 registry = "https://github.com/UpliftGames/wally-index"
 license = "MIT"
 authors = ["Bigfoot"]

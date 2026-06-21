@@ -5,12 +5,15 @@ LuCid is a **lightweight** Luau package designed to simplify Object-Oriented Pro
 > [!WARNING]
 > This project is currently in **Beta**. Expect breaking changes and use with caution.
 
+> [!IMPORTANT]
+> You must enable the new Luau type solver for the types to work correctly.
+
 ## Installation
 
 ### Wally
 
 ```toml
-LuCid = "bigfootpp/lucid@0.5.2"
+LuCid = "bigfootpp/lucid@0.6.0"
 ```
 
 ## Quick Start
@@ -76,7 +79,7 @@ Chained `super()` calls work across multiple levels:
 ### Limitations
 
 - `super()` must be called **inside a class method**. Calling it directly in a `task.spawn` or `task.delay` callback will error.
-- A class method using `super()` **can** be called from `task.spawn` -- only bare `super()` calls outside of method dispatch are invalid.
+- A class method using `super()` **can** be called from `task.spawn`
 - `obj.method == obj.method` is `false` -- each access returns a new wrapper.
 
 ## License
